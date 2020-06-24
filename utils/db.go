@@ -17,7 +17,7 @@ const (
 	// AccountsDB : name of accounts db
 	AccountsDB = "accounts"
 	// AccountsPassword : password of accounts db
-	AccountsPassword = "CHGVirJJHp9QlxBze2OP"
+	AccountsPassword = "sMTeKeqnb7ic8e4gQejD"
 	// AccountsHost : accounts db host
 	AccountsHost = "accounts.cx7blgdanz85.us-east-1.rds.amazonaws.com"
 

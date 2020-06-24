@@ -15,19 +15,22 @@ import (
 // Builds connection to the orders and accounts dbs
 // (init are auto called by Go)
 func init() {
-	accountsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
+	// var uri = "%s:%s@tcp(%s:%s)/%s="
+	// accountsURI := fmt.Sprintf(uri, utils.Username, utils.AccountsPassword,
+	// 	utils.AccountsHost, utils.Port, utils.AccountsDB)
+	accountsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
 		utils.AccountsHost, utils.Port, utils.Username, utils.AccountsDB, utils.AccountsPassword)
-	addressesURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
-		utils.AddressesHost, utils.Port, utils.Username, utils.AddressesDB, utils.AddressesPassword)
-	ordersURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
-		utils.OrdersHost, utils.Port, utils.Username, utils.OrdersDB, utils.OrdersPassword)
-	toppingsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
-		utils.ToppingsHost, utils.Port, utils.Username, utils.ToppingsDB, utils.ToppingsPassword)
+	// addressesURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
+	// 	utils.AddressesHost, utils.Port, utils.Username, utils.AddressesDB, utils.AddressesPassword)
+	// ordersURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
+	// 	utils.OrdersHost, utils.Port, utils.Username, utils.OrdersDB, utils.OrdersPassword)
+	// toppingsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
+	// 	utils.ToppingsHost, utils.Port, utils.Username, utils.ToppingsDB, utils.ToppingsPassword)
 
 	log.Infof("| Accounts  URI: %s", accountsURI)
-	log.Infof("| Addresses URI: %s", addressesURI)
-	log.Infof("| Orders    URI: %s", ordersURI)
-	log.Infof("| Toppings  URI: %s", toppingsURI)
+	// log.Infof("| Addresses URI: %s", addressesURI)
+	// log.Infof("| Orders    URI: %s", ordersURI)
+	// log.Infof("| Toppings  URI: %s", toppingsURI)
 
 	accountsConn, err := gorm.Open("postgres", accountsURI)
 	defer accountsConn.Close()
@@ -37,40 +40,40 @@ func init() {
 		log.Infof("| Successfully connected to the accounts db!")
 	}
 
-	addressesConn, err := gorm.Open("postgres", addressesURI)
-	defer addressesConn.Close()
-	if err != nil {
-		log.Errorf("| Could not open connection to the addresses db with error: %s", err.Error())
-	} else {
-		log.Infof("| Successfully connected to the addresses db!")
-	}
+	// addressesConn, err := gorm.Open("postgres", addressesURI)
+	// defer addressesConn.Close()
+	// if err != nil {
+	// 	log.Errorf("| Could not open connection to the addresses db with error: %s", err.Error())
+	// } else {
+	// 	log.Infof("| Successfully connected to the addresses db!")
+	// }
 
-	ordersConn, err := gorm.Open("postgres", ordersURI)
-	defer ordersConn.Close()
-	if err != nil {
-		log.Errorf("| Could not open connection to the orders db with error: %s", err.Error())
-	} else {
-		log.Infof("| Successfully connected to the orders db!")
-	}
+	// ordersConn, err := gorm.Open("postgres", ordersURI)
+	// defer ordersConn.Close()
+	// if err != nil {
+	// 	log.Errorf("| Could not open connection to the orders db with error: %s", err.Error())
+	// } else {
+	// 	log.Infof("| Successfully connected to the orders db!")
+	// }
 
-	toppingsConn, err := gorm.Open("postgres", toppingsURI)
-	defer toppingsConn.Close()
-	if err != nil {
-		log.Errorf("| Could not open connection to the toppings db with error: %s", err.Error())
-	} else {
-		log.Infof("| Successfully connected to the toppings db!")
-	}
+	// toppingsConn, err := gorm.Open("postgres", toppingsURI)
+	// defer toppingsConn.Close()
+	// if err != nil {
+	// 	log.Errorf("| Could not open connection to the toppings db with error: %s", err.Error())
+	// } else {
+	// 	log.Infof("| Successfully connected to the toppings db!")
+	// }
 
 	utils.SetAccountsDB(accountsConn)
-	utils.SetAddressesDB(addressesConn)
-	utils.SetOrdersDB(ordersConn)
-	utils.SetToppingsDB(toppingsConn)
+	// utils.SetAddressesDB(addressesConn)
+	// utils.SetOrdersDB(ordersConn)
+	// utils.SetToppingsDB(toppingsConn)
 
 	// Ensure that the structure of the tables matches the structure of the types they support
 	utils.AssertAccountsSchema()
-	utils.AssertAddressesSchema()
-	utils.AssertOrdersSchema()
-	utils.AssertToppingsSchema()
+	// utils.AssertAddressesSchema()
+	// utils.AssertOrdersSchema()
+	// utils.AssertToppingsSchema()
 }
 
 func main() {
