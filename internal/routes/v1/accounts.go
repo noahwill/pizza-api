@@ -38,11 +38,13 @@ func CreateAccountRoute(c echo.Context) error {
 
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
+		out.Ok = false
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	if err := helpers.ValidateCreateAccountInput(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
+		out.Ok = false
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -52,6 +54,7 @@ func CreateAccountRoute(c echo.Context) error {
 	`)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
+		out.Ok = false
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 	defer stmt.Close()
@@ -72,9 +75,11 @@ func CreateAccountRoute(c echo.Context) error {
 	_, err = stmt.Exec(account.Active, account.CreatedAt, account.Email, account.FirstName, account.LastName, account.LastUpdated, account.Password, account.UUID)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
+		out.Ok = false
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
+	out.Ok = true
 	return c.JSON(http.StatusOK, &out)
 }
 

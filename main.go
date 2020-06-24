@@ -30,6 +30,8 @@ func init() {
 	accountsConn, err := sql.Open("postgres", accountsURI)
 	if err != nil {
 		log.Errorf("| Could not open connection to the accounts db with error: %s", err.Error())
+	} else if err := accountsConn.Ping(); err != nil {
+		log.Errorf("| Could not open connection to the accounts db with error: %s", err.Error())
 	} else {
 		log.Infof("| Successfully connected to the accounts db!")
 	}
