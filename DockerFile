@@ -1,0 +1,5 @@
+FROM gliderlabs/alpine:3.4
+RUN apk update
+RUN apk --no-cache add ca-certificates && update-ca-certificates
+ADD pizza-api pizza-api
+CMD /pizza-api
