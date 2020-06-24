@@ -16,7 +16,7 @@ import (
 // Builds connection to the orders and accounts dbs
 // (init are auto called by Go)
 func init() {
-	uri := "%s:%s@tcp(%s:%s)/%s="
+	uri := "postgres://%s:%s@tcp(%s:%s)/%s?sslMode=disable"
 	accountsURI := fmt.Sprintf(uri, utils.Username, utils.AccountsPassword, utils.AccountsHost, utils.Port, utils.AccountsDB)
 	addressesURI := fmt.Sprintf(uri, utils.Username, utils.AddressesPassword, utils.AddressesHost, utils.Port, utils.AddressesDB)
 	ordersURI := fmt.Sprintf(uri, utils.Username, utils.OrdersPassword, utils.OrdersHost, utils.Port, utils.OrdersDB)
