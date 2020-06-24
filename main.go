@@ -15,7 +15,6 @@ import (
 // Builds connection to the orders and accounts dbs
 // (init are auto called by Go)
 func init() {
-	// Orders Connection String
 	accountsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
 		utils.AccountsHost, utils.Port, utils.Username, utils.AccountsDB, utils.AccountsPassword)
 	addressesURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
