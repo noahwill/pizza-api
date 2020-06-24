@@ -2,19 +2,6 @@ package client
 
 import "pizza-api/utils"
 
-// Order : represents a ZaRnnr order
-type Order struct {
-	AccountID   string `json:"accountID,omitempty"`
-	Active      bool   `json:"active,omitempty"`
-	Cheese      Cheese `json:"cheese,omitempty"`
-	CreatedAt   int64  `json:"createdAt,omitempty"`
-	LastUpdated int64  `json:"lastUpdated,omitempty"`
-	Sauce       Sauce  `json:"sauce,omitempty"`
-	Size        Size   `json:"size,omitempty"`
-	ToppingsID  string `json:"toppingsID,omitempty"`
-	UUID        string `json:"UUID,omitempty"`
-}
-
 // GetOrdersOutput : ouput for the GetOrdersRoute
 type GetOrdersOutput struct {
 	Orders []utils.Order `json:"orders,omitempty"`

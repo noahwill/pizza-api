@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"pizza-api/pkg/client"
-
 	"github.com/jinzhu/gorm"
 )
 
@@ -37,7 +35,7 @@ func SetAccountsDB(a *gorm.DB) { accounts = a }
 func GetAccountsDB() *gorm.DB { return accounts }
 
 // AssertAccountsSchema : ensures that the accounts db is using the correct schema
-func AssertAccountsSchema() { accounts.Debug().AutoMigrate(&client.Account{}) }
+func AssertAccountsSchema() { accounts.Debug().AutoMigrate(&Account{}) }
 
 // SetOrdersDB : sets the orders database
 func SetOrdersDB(o *gorm.DB) { orders = o }
@@ -46,7 +44,7 @@ func SetOrdersDB(o *gorm.DB) { orders = o }
 func GetOrdersDB() *gorm.DB { return orders }
 
 // AssertOrdersSchema : ensures that the orders db is using the correct schema
-func AssertOrdersSchema() { orders.Debug().AutoMigrate(&client.Order{}) }
+func AssertOrdersSchema() { orders.Debug().AutoMigrate(&Order{}) }
 
 // SetToppingsDB : sets the toppings database
 func SetToppingsDB(t *gorm.DB) { toppings = t }
@@ -55,4 +53,4 @@ func SetToppingsDB(t *gorm.DB) { toppings = t }
 func GetToppingsDB() *gorm.DB { return toppings }
 
 // AssertToppingsSchema : ensures that the toppings db is using the correct schema
-func AssertToppingsSchema() { toppings.Debug().AutoMigrate(&client.Toppings{}) }
+func AssertToppingsSchema() { toppings.Debug().AutoMigrate(&Toppings{}) }
