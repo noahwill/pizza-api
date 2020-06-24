@@ -38,7 +38,7 @@ const (
 	// ToppingsDB : name of toppings db
 	ToppingsDB = "toppings"
 	// ToppingsPassword : password of toppings db
-	ToppingsPassword = "AaIJVleEYv4J6QMAs7YT"
+	ToppingsPassword = "NQUS1rerXvkqAsf8V7yl"
 	// ToppingsHost : addresses db host
 	ToppingsHost = "toppings.cx7blgdanz85.us-east-1.rds.amazonaws.com"
 )
@@ -52,29 +52,29 @@ func GetAccountsDB() *sql.DB { return accounts }
 // // AssertAccountsSchema : ensures that the accounts db is using the correct schema
 // func AssertAccountsSchema() { accounts.Debug().AutoMigrate(&Account{}) }
 
-// // SetAddressesDB : sets the addresses database
-// func SetAddressesDB(a *gorm.DB) { addresses = a }
+// SetAddressesDB : sets the addresses database
+func SetAddressesDB(a *sql.DB) { addresses = a }
 
-// // GetAddressesDB : returns the addresses database
-// func GetAddressesDB() *gorm.DB { return addresses }
+// GetAddressesDB : returns the addresses database
+func GetAddressesDB() *sql.DB { return addresses }
 
 // // AssertAddressesSchema : ensures that the addresses db is using the correct schema
 // func AssertAddressesSchema() { accounts.Debug().AutoMigrate(&Address{}) }
 
-// // SetOrdersDB : sets the orders database
-// func SetOrdersDB(o *gorm.DB) { orders = o }
+// SetOrdersDB : sets the orders database
+func SetOrdersDB(o *sql.DB) { orders = o }
 
-// // GetOrdersDB : returns the orders database
-// func GetOrdersDB() *gorm.DB { return orders }
+// GetOrdersDB : returns the orders database
+func GetOrdersDB() *sql.DB { return orders }
 
 // // AssertOrdersSchema : ensures that the orders db is using the correct schema
 // func AssertOrdersSchema() { orders.Debug().AutoMigrate(&Order{}) }
 
-// // SetToppingsDB : sets the toppings database
-// func SetToppingsDB(t *gorm.DB) { toppings = t }
+// SetToppingsDB : sets the toppings database
+func SetToppingsDB(t *sql.DB) { toppings = t }
 
-// // GetToppingsDB : returns the accounts database
-// func GetToppingsDB() *gorm.DB { return toppings }
+// GetToppingsDB : returns the accounts database
+func GetToppingsDB() *sql.DB { return toppings }
 
 // // AssertToppingsSchema : ensures that the toppings db is using the correct schema
 // func AssertToppingsSchema() { toppings.Debug().AutoMigrate(&Toppings{}) }
