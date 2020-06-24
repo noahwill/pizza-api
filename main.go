@@ -16,16 +16,11 @@ import (
 // Builds connection to the orders and accounts dbs
 // (init are auto called by Go)
 func init() {
-	// uri := "%s:%s@tcp(%s:%s)/%s="
-	// accountsURI := fmt.Sprintf(uri, utils.Username, utils.AccountsPassword, utils.AccountsHost, utils.Port, utils.AccountsDB)
-	// addressesURI := fmt.Sprintf(uri, utils.Username, utils.AddressesPassword, utils.AddressesHost, utils.Port, utils.AddressesDB)
-	// ordersURI := fmt.Sprintf(uri, utils.Username, utils.OrdersPassword, utils.OrdersHost, utils.Port, utils.OrdersDB)
-	// toppingsURI := fmt.Sprintf(uri, utils.Username, utils.ToppingsPassword, utils.ToppingsHost, utils.Port, utils.ToppingsDB)
-	uri := "host=%s port=%s user=%s dbname=%s password=%s sslmode=disabled"
-	accountsURI := fmt.Sprintf(uri, utils.AccountsHost, utils.Port, utils.Username, utils.AccountsDB, utils.AccountsPassword)
-	addressesURI := fmt.Sprintf(uri, utils.AddressesHost, utils.Port, utils.Username, utils.AddressesDB, utils.AddressesPassword)
-	ordersURI := fmt.Sprintf(uri, utils.OrdersHost, utils.Port, utils.Username, utils.OrdersDB, utils.OrdersPassword)
-	toppingsURI := fmt.Sprintf(uri, utils.ToppingsHost, utils.Port, utils.Username, utils.ToppingsDB, utils.ToppingsPassword)
+	uri := "%s:%s@tcp(%s:%s)/%s="
+	accountsURI := fmt.Sprintf(uri, utils.Username, utils.AccountsPassword, utils.AccountsHost, utils.Port, utils.AccountsDB)
+	addressesURI := fmt.Sprintf(uri, utils.Username, utils.AddressesPassword, utils.AddressesHost, utils.Port, utils.AddressesDB)
+	ordersURI := fmt.Sprintf(uri, utils.Username, utils.OrdersPassword, utils.OrdersHost, utils.Port, utils.OrdersDB)
+	toppingsURI := fmt.Sprintf(uri, utils.Username, utils.ToppingsPassword, utils.ToppingsHost, utils.Port, utils.ToppingsDB)
 
 	log.Infof("| Accounts  URI: %s", accountsURI)
 	log.Infof("| Addresses URI: %s", addressesURI)
