@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	v1routes "pizza-api/internal/routes/v1"
 	"pizza-api/utils"
 	"time"
@@ -107,5 +108,5 @@ func main() {
 	v1.PUT("/order/:uuid", v1routes.UpdateOrderRoute)
 	v1.DELETE("/order/:uuid", v1routes.DeleteOrderRoute)
 
-	e.Logger.Fatal(e.Start(":8282"))
+	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 }
