@@ -17,7 +17,7 @@ import (
 // (init are auto called by Go)
 func init() {
 	uri := "%s:%s@tcp(%s:%s)/%s?sslMode=disable"
-	accountsURI := "vxbeicwalhzehb:8648927891653f4cf76a2c664256971723b1ef98569acc5a680843ebf02ffe1d@ec2-34-192-173-173.compute-1.amazonaws.com:5432/d8m251cskkpkf8"
+	accountsURI := "vxbeicwalhzehb:8648927891653f4cf76a2c664256971723b1ef98569acc5a680843ebf02ffe1d@ec2-34-192-173-173.compute-1.amazonaws.com:5432/d8m251cskkpkf8="
 	// fmt.Sprintf(uri, utils.Username, utils.AccountsPassword, utils.AccountsHost, utils.Port, utils.AccountsDB)
 	addressesURI := fmt.Sprintf(uri, utils.Username, utils.AddressesPassword, utils.AddressesHost, utils.Port, utils.AddressesDB)
 	ordersURI := fmt.Sprintf(uri, utils.Username, utils.OrdersPassword, utils.OrdersHost, utils.Port, utils.OrdersDB)
