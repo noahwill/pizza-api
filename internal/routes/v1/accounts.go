@@ -3,7 +3,6 @@ package internal
 import (
 	"net/http"
 	"pizza-api/pkg/types"
-	"pizza-api/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -11,9 +10,6 @@ import (
 // GetAccountsRoute : get all active accounts
 func GetAccountsRoute(c echo.Context) error {
 	out := types.GetAccountsOutput{}
-	db := utils.GetAccountsDB()
-	db.Find(&out.Accounts)
-	out.Ok = true
 	return c.JSON(http.StatusOK, &out)
 }
 

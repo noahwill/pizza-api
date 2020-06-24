@@ -1,13 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	v1routes "pizza-api/internal/routes/v1"
 	"pizza-api/utils"
 	"time"
 
 	"github.com/apex/log"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo/v4"
 )
@@ -15,11 +15,11 @@ import (
 // Builds connection to the orders and accounts dbs
 // (init are auto called by Go)
 func init() {
-	// var uri = "%s:%s@tcp(%s:%s)/%s="
-	// accountsURI := fmt.Sprintf(uri, utils.Username, utils.AccountsPassword,
-	// 	utils.AccountsHost, utils.Port, utils.AccountsDB)
-	accountsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
-		utils.AccountsHost, utils.Port, utils.Username, utils.AccountsDB, utils.AccountsPassword)
+	var uri = "%s:%s@tcp(%s:%s)/%s="
+	accountsURI := fmt.Sprintf(uri, utils.Username, utils.AccountsPassword,
+		utils.AccountsHost, utils.Port, utils.AccountsDB)
+	// accountsURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
+	// utils.AccountsHost, utils.Port, utils.Username, utils.AccountsDB, utils.AccountsPassword)
 	// addressesURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
 	// 	utils.AddressesHost, utils.Port, utils.Username, utils.AddressesDB, utils.AddressesPassword)
 	// ordersURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
@@ -32,7 +32,7 @@ func init() {
 	// log.Infof("| Orders    URI: %s", ordersURI)
 	// log.Infof("| Toppings  URI: %s", toppingsURI)
 
-	accountsConn, err := gorm.Open("postgres", accountsURI)
+	accountsConn, err := sql.Open("postgres", accountsURI)
 	defer accountsConn.Close()
 	if err != nil {
 		log.Errorf("| Could not open connection to the accounts db with error: %s", err.Error())
@@ -70,7 +70,7 @@ func init() {
 	// utils.SetToppingsDB(toppingsConn)
 
 	// Ensure that the structure of the tables matches the structure of the types they support
-	utils.AssertAccountsSchema()
+	// utils.AssertAccountsSchema()
 	// utils.AssertAddressesSchema()
 	// utils.AssertOrdersSchema()
 	// utils.AssertToppingsSchema()
