@@ -28,7 +28,6 @@ func init() {
 	log.Infof("| Toppings  URI: %s", toppingsURI)
 
 	accountsConn, err := sql.Open("postgres", accountsURI)
-	defer accountsConn.Close()
 	if err != nil {
 		log.Errorf("| Could not open connection to the accounts db with error: %s", err.Error())
 	} else {
@@ -36,7 +35,6 @@ func init() {
 	}
 
 	addressesConn, err := sql.Open("postgres", addressesURI)
-	defer addressesConn.Close()
 	if err != nil {
 		log.Errorf("| Could not open connection to the addresses db with error: %s", err.Error())
 	} else {
@@ -44,7 +42,6 @@ func init() {
 	}
 
 	ordersConn, err := sql.Open("postgres", ordersURI)
-	defer ordersConn.Close()
 	if err != nil {
 		log.Errorf("| Could not open connection to the orders db with error: %s", err.Error())
 	} else {
@@ -52,7 +49,6 @@ func init() {
 	}
 
 	toppingsConn, err := sql.Open("postgres", toppingsURI)
-	defer toppingsConn.Close()
 	if err != nil {
 		log.Errorf("| Could not open connection to the toppings db with error: %s", err.Error())
 	} else {
