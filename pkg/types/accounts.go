@@ -1,4 +1,4 @@
-package client
+package types
 
 import "pizza-api/utils"
 
