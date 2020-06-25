@@ -55,7 +55,38 @@ func CreateAccountRoute(c echo.Context) error {
 
 // UpdateAccountRoute : update an account
 func UpdateAccountRoute(c echo.Context) error {
+	account := c.Param("account")
+	in := types.UpdateAccountInput{}
 	out := types.UpdateAccountOutput{}
+
+	accountToUpdate := types.Account{}
+	if err := utils.Config.AccountsTableConn.Get("UUID", account).One(&accountToUpdate); err != nil {
+		out.Error = fmt.Sprintf("Could not update account with error: %s", err.Error())
+		out.Ok = false
+		return c.JSON(http.StatusBadRequest, &out)
+	}
+
+	if err := c.Bind(&in); err != nil {
+		out.Error = fmt.Sprintf("Could not update account with error: %s", err.Error())
+		out.Ok = false
+		return c.JSON(http.StatusInternalServerError, &out)
+	}
+
+	updatedAccount, err := helpers.ValidateUpdateAccountInput(&in, &accountToUpdate)
+	if err != nil {
+		out.Error = fmt.Sprintf("Could not update account with error: %s", err.Error())
+		out.Ok = false
+		return c.JSON(http.StatusBadRequest, &out)
+	}
+
+	out.Account = *updatedAccount
+	if err := utils.Config.AccountsTableConn.Put(updatedAccount).Run(); err != nil {
+		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
+		out.Ok = false
+		return c.JSON(http.StatusInternalServerError, &out)
+	}
+
+	out.Ok = true
 	return c.JSON(http.StatusOK, &out)
 }
 
