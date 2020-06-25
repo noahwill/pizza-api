@@ -9,13 +9,13 @@ import (
 
 var (
 	// AlphaNumeric regex
-	alphaNumeric = regexp.MustCompile(`[^A-Za-z0-9" "]+$`).MatchString
+	alphaNumeric = regexp.MustCompile(`^[A-Za-z0-9" "]+$`).MatchString
 	// Alphabetic regex
 	alphabetic = regexp.MustCompile(`^[a-zA-Z" "]+$`).MatchString
 	// Numeric rexex
 	numeric = regexp.MustCompile(`^[0-9\-]+$`).MatchString
 	// AlphaNumericOcto regex
-	alphaNumericOcto = regexp.MustCompile(`[^A-Za-z0-9#" "]+$`).MatchString
+	alphaNumericOcto = regexp.MustCompile(`^[A-Za-z0-9#" "]+$`).MatchString
 )
 
 func validateAddress(address *types.Address) (*types.Address, error) {
