@@ -10,65 +10,73 @@ type Address struct {
 	UUID            string `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
 }
 
-// Cheese : represents an available pizza cheese
-type Cheese string
+var (
+	// Cheese name to price
+	Cheese = map[string]float64{
+		"cheddar":    3.00,
+		"mozzarella": 3.00,
+		"parmesan":   4.00,
+	}
 
-const (
-	chCheddar    Cheese = "cheddar"
-	chMozzarella Cheese = "mozzarella"
-	chParmesan   Cheese = "parmesan"
+	// Sauce name to price
+	Sauce = map[string]float64{
+		"tomato":   2.00,
+		"white":    2.00,
+		"barbeque": 3.00,
+	}
+
+	// Size name to price
+	Size = map[string]float64{
+		"small":  8.00,
+		"medium": 16.00,
+		"large":  32.00,
+		"party":  48.00,
+	}
+
+	// Statuses available
+	Statuses = map[string]Status{
+		"Recieved": Recieved,
+		"Assebly":  Assembly,
+		"Baking":   Baking,
+		"Ready":    Ready,
+		"EnRoute":  EnRoute,
+	}
+
+	// Topping name to price
+	Topping = map[string]float64{
+		"anchovies": 0.75,
+		"artichoke": 1.25,
+		"basil":     0.75,
+		"chicken":   1.75,
+		"ham":       1.25,
+		"kale":      0.75,
+		"olives":    0.50,
+		"onion":     0.50,
+		"pepperoni": 1.25,
+		"pineapple": 100.00,
+		"tomato":    0.75,
+	}
 )
 
 // Toppings : represents a ZaRnnr order toppings
 type Toppings struct {
-	Cheese   Cheese    `dynamo:"Cheese,omitempty" json:"cheese,omitempty"`
-	Sauce    Sauce     `dynamo:"Sauce,omitempty" json:"sauce,omitempty"`
-	Toppings []Topping `dynamo:"Toppings,omitempty" json:"toppings,omitempty"`
+	Cheese   string   `dynamo:"Cheese,omitempty" json:"cheese,omitempty"`
+	Sauce    string   `dynamo:"Sauce,omitempty" json:"sauce,omitempty"`
+	Toppings []string `dynamo:"Toppings,omitempty" json:"toppings,omitempty"`
 }
-
-// Sauce : represents an available pizza sauce
-type Sauce string
-
-const (
-	scTomato   Sauce = "tomato"
-	scWhite    Sauce = "white"
-	scBarbeque Sauce = "barbeque"
-)
-
-// Size : represents an available pizza size
-type Size string
-
-const (
-	szSmall  Size = "small"
-	szMedium Size = "medium"
-	szLarge  Size = "large"
-	szParty  Size = "party"
-)
 
 // Status : represents the status of an order
 type Status string
 
 const (
-	stRecieved Status = "Order Recieved!"
-	stAssembly Status = "Your pizza is being assembled!"
-	stBaking   Status = "Your pizza is baking!"
-	stReady    Status = "Your pizza is ready for pickup!"
-	stEnRoute  Status = "Your pizza is on the way!"
-)
-
-// Topping : represents an avialable pizza topping
-type Topping string
-
-const (
-	tpAnchovies Topping = "anchovies"
-	tpArtichoke Topping = "artichoke"
-	tpBasil     Topping = "basil"
-	tpChicken   Topping = "chicken"
-	tpHam       Topping = "ham"
-	tpKale      Topping = "kale"
-	tpOlives    Topping = "olives"
-	tpOnion     Topping = "onion"
-	tpPepperoni Topping = "pepperoni"
-	tpPineapple Topping = "pineapple"
-	tpTomato    Topping = "tomato"
+	// Recieved status
+	Recieved Status = "Recieved"
+	// Assembly status
+	Assembly Status = "Assembly"
+	// Baking status
+	Baking Status = "Baking"
+	// Ready status
+	Ready Status = "Ready"
+	// EnRoute status
+	EnRoute Status = "EnRoute"
 )

@@ -51,7 +51,7 @@ type UpdateAccountInput struct {
 	Email     *string  `json:"email,omitempty"`
 	FirstName *string  `json:"firstName,omitempty"`
 	LastName  *string  `json:"lastName,omitempty"`
-	Order     *string  `json:"lastName,omitempty"`
+	Order     *string  `json:"order,omitempty"`
 	Password  *string  `json:"password,omitempty"`
 }
 
