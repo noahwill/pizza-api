@@ -43,7 +43,7 @@ func CreateAccountRoute(c echo.Context) error {
 	}
 
 	uu, _ := uuid.NewV4()
-	account := utils.Account{
+	account := types.Account{
 		Active:      true,
 		CreatedAt:   time.Now().Unix(),
 		Email:       *in.Email,
