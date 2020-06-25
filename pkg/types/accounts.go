@@ -2,16 +2,16 @@ package types
 
 // Account : represents a ZaRnnr account
 type Account struct {
-	Active      bool     `json:"active,omitempty"`
-	Address     Address  `json:"address,omitempty"`
-	CreatedAt   int64    `json:"createdAt,omitempty"`
-	Email       string   `json:"email,omitempty"`
-	FirstName   string   `json:"firstName,omitempty"`
-	LastName    string   `json:"lastName,omitempty"`
-	LastUpdated int64    `json:"lastUpdated,omitempty"`
-	Orders      []string `json:"orders,omitempty"`
-	Password    string   `json:"password,omitempty"` // TODO: this pizza shop dev hasn't done much work with security
-	UUID        string   `json:"UUID,omitempty"`
+	Active      bool     `dynamo:"Active,omitempty" json:"active,omitempty"`
+	Address     Address  `dynamo:"Address,omitempty" json:"address,omitempty"`
+	CreatedAt   int64    `dynamo:"CreatedAt,omitempty" json:"createdAt,omitempty"`
+	Email       string   `dynamo:"Email,omitempty" json:"email,omitempty"`
+	FirstName   string   `dynamo:"FirstName,omitempty" json:"firstName,omitempty"`
+	LastName    string   `dynamo:"LastName,omitempty" json:"lastName,omitempty"`
+	LastUpdated int64    `dynamo:"LastUpdated,omitempty" json:"lastUpdated,omitempty"`
+	Orders      []string `dynamo:"Orders,omitempty" json:"orders,omitempty"`
+	Password    string   `dynamo:"Password,omitempty" json:"password,omitempty"` // TODO: this pizza shop dev hasn't done much work with security - pws are only strings
+	UUID        string   `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
 }
 
 // GetAccountsOutput : ouput for the GetAccountsRoute
