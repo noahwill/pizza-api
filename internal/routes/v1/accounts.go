@@ -130,6 +130,17 @@ func DeleteAccountRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
+	out.Account.Active = false
+
+	// Delete the orders associated with the account
+	for _, order := range out.Account.Orders {
+		if err := utils.Config.OrdersTableConn.Delete("UUID", order).Run(); err != nil {
+			out.Error = fmt.Sprintf("Could not delete order %s for deleted account %s with error: %s", order, accountID, err.Error())
+			out.Ok = false
+			return c.JSON(http.StatusInternalServerError, &out)
+		}
+	}
+
 	out.Ok = true
 	return c.JSON(http.StatusOK, &out)
 }
