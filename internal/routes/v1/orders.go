@@ -30,26 +30,32 @@ func GetAccountOrdersRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	if in.Active != nil {
-		if *in.Active { // Get all active orders
-			if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "Account", accountID, "Active", true).All(&orders); err != nil {
-				out.Error = fmt.Sprintf("Could not get active orders for account %s with error: %s", accountID, err.Error())
-				out.Ok = false
-				return c.JSON(http.StatusInternalServerError, &out)
-			}
-		} else if !*in.Active { // Get all inactive orders
-			if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "Account", accountID, "Active", false).All(&orders); err != nil {
-				out.Error = fmt.Sprintf("Could not get inactive orders for account %s with error: %s", accountID, err.Error())
-				out.Ok = false
-				return c.JSON(http.StatusInternalServerError, &out)
-			}
-		}
-	} else { // Get all orders
-		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "Account", accountID).All(&orders); err != nil {
-			out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
-			out.Ok = false
-			return c.JSON(http.StatusInternalServerError, &out)
-		}
+	// if in.Active != nil {
+	// 	if *in.Active { // Get all active orders
+	// 		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "Account", accountID, "Active", true).All(&orders); err != nil {
+	// 			out.Error = fmt.Sprintf("Could not get active orders for account %s with error: %s", accountID, err.Error())
+	// 			out.Ok = false
+	// 			return c.JSON(http.StatusInternalServerError, &out)
+	// 		}
+	// 	} else if !*in.Active { // Get all inactive orders
+	// 		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "Account", accountID, "Active", false).All(&orders); err != nil {
+	// 			out.Error = fmt.Sprintf("Could not get inactive orders for account %s with error: %s", accountID, err.Error())
+	// 			out.Ok = false
+	// 			return c.JSON(http.StatusInternalServerError, &out)
+	// 		}
+	// 	}
+	// } else { // Get all orders
+	// 	if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "Account", accountID).All(&orders); err != nil {
+	// 		out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
+	// 		out.Ok = false
+	// 		return c.JSON(http.StatusInternalServerError, &out)
+	// 	}
+	// }
+
+	if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "Account", accountID).All(&orders); err != nil {
+		out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
+		out.Ok = false
+		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Orders = orders
