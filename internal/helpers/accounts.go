@@ -4,8 +4,10 @@ import (
 	"errors"
 	"pizza-api/pkg/types"
 	"strings"
+	"time"
 
 	"github.com/badoux/checkmail"
+	"github.com/gofrs/uuid"
 )
 
 func validateEmail(email string) error {
@@ -37,32 +39,111 @@ func validateEmail(email string) error {
 	return nil
 }
 
-// ValidateCreateAccountInput : validates CreateAccountInput
-func ValidateCreateAccountInput(in *types.CreateAccountInput) error {
+// ValidateCreateAccountInput : validates CreateAccountInput and constructs an account object to create
+func ValidateCreateAccountInput(in *types.CreateAccountInput) (*types.Account, error) {
+	account := &types.Account{}
+
+	if in.Address == nil {
+		return account, errors.New("Specify an Address")
+	}
+
+	address, err := validateAddress(in.Address)
+	if err != nil {
+		return account, err
+	}
+
 	if in.Email == nil {
-		return errors.New("Specify an Email")
+		return account, errors.New("Specify an Email")
 	}
 	if err := validateEmail(*in.Email); err != nil {
-		return err
+		return account, err
 	}
 
 	if in.FirstName == nil {
-		return errors.New("Specify a FirstName")
-	} else if !IsOnlyAlphabetic(*in.FirstName) {
-		return errors.New("FirstName must be alphabetic")
+		return account, errors.New("Specify a FirstName")
+	} else if !alphabetic(strings.TrimSpace(*in.FirstName)) {
+		return account, errors.New("FirstName must be alphabetic")
 	}
 
 	if in.LastName == nil {
-		return errors.New("Specify a LastName")
-	} else if !IsOnlyAlphabetic(*in.LastName) {
-		return errors.New("LastName must be alphabetic")
+		return account, errors.New("Specify a LastName")
+	} else if !alphabetic(strings.TrimSpace(*in.LastName)) {
+		return account, errors.New("LastName must be alphabetic")
 	}
 
 	if in.Password == nil {
-		return errors.New("Specify a Password")
-	} else if !IsOnlyAlphabetic(*in.Password) { // TODO : let's validate for stronger passwords, maybe learn some stuff about security, huh bud?
-		return errors.New("Password must be alphabetic")
+		return account, errors.New("Specify a Password")
+	} else if !alphabetic(strings.TrimSpace(*in.Password)) { // TODO : let's validate for stronger passwords, maybe learn some stuff about security, huh bud?
+		return account, errors.New("Password must be alphabetic")
 	}
 
-	return nil
+	uu, _ := uuid.NewV4()
+	account = &types.Account{
+		Active:      true,
+		Address:     *address,
+		CreatedAt:   time.Now().Unix(),
+		Email:       strings.ToLower(strings.TrimSpace(*in.Email)),
+		FirstName:   strings.TrimSpace(*in.FirstName),
+		LastName:    strings.TrimSpace(*in.LastName),
+		LastUpdated: time.Now().Unix(),
+		Orders:      []string{},
+		Password:    strings.TrimSpace(*in.Password),
+		UUID:        uu.String(),
+	}
+
+	return account, nil
+}
+
+// ValidateUpdateAccountInput : validates UpdateAccountInput and updates the given account object accordingly
+func ValidateUpdateAccountInput(in *types.UpdateAccountInput, account *types.Account) (*types.Account, error) {
+	if in.Active != nil {
+		account.Active = *in.Active
+	}
+
+	if in.Address != nil {
+		address, err := validateAddress(in.Address)
+		if err != nil {
+			return account, err
+		}
+
+		account.Address = *address
+	}
+
+	if in.Email != nil {
+		if err := validateEmail(*in.Email); err != nil {
+			return account, err
+		}
+
+		account.Email = strings.ToLower(strings.TrimSpace(*in.Email))
+	}
+
+	if in.FirstName != nil {
+		if !alphabetic(strings.TrimSpace(*in.FirstName)) {
+			return account, errors.New("FirstName must be alphabetic")
+		}
+
+		account.FirstName = strings.TrimSpace(*in.FirstName)
+	}
+
+	if in.LastName != nil {
+		if !alphabetic(strings.TrimSpace(*in.LastName)) {
+			return account, errors.New("LastName must be alphabetic")
+		}
+
+		account.LastName = strings.TrimSpace(*in.LastName)
+	}
+
+	if in.Order != nil {
+		// TODO : search for order in orders DB to validate it exists
+	}
+
+	if in.Password != nil {
+		if !alphabetic(strings.TrimSpace(*in.Password)) {
+			return account, errors.New("Password must be alphabetic")
+		}
+
+		account.Password = strings.TrimSpace(*in.Password)
+	}
+
+	return account, nil
 }

@@ -6,9 +6,7 @@ import (
 	"pizza-api/internal/helpers"
 	"pizza-api/pkg/types"
 	"pizza-api/utils"
-	"time"
 
-	"github.com/gofrs/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -36,26 +34,16 @@ func CreateAccountRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	if err := helpers.ValidateCreateAccountInput(&in); err != nil {
+	account, err := helpers.ValidateCreateAccountInput(&in)
+	if err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
-	uu, _ := uuid.NewV4()
-	account := types.Account{
-		Active:      true,
-		CreatedAt:   time.Now().Unix(),
-		Email:       *in.Email,
-		FirstName:   *in.FirstName,
-		LastName:    *in.LastName,
-		LastUpdated: time.Now().Unix(),
-		Password:    *in.Password,
-		UUID:        uu.String(),
-	}
-	out.Account = account
+	out.Account = *account
 
-	if err := utils.Config.AccountsTableConn.Put(&account).Run(); err != nil {
+	if err := utils.Config.AccountsTableConn.Put(account).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
 		return c.JSON(http.StatusInternalServerError, &out)

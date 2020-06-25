@@ -2,10 +2,7 @@ package types
 
 // Address : represents a ZaRnnr order address
 type Address struct {
-	CreatedAt       int64  `dynamo:"CreatedAt,omitempty" json:"createdAt,omitempty"`
-	Country         string `dynamo:"Country,omitempty" json:"country,omitempty"`
 	ExtendedAddress string `dynamo:"EdtendedAddress,omitempty" json:"extendedAddress,omitempty"`
-	LastUpdated     int64  `dynamo:"LastUpdated,omitempty" json:"lastUpdated,omitempty"`
 	Locality        string `dynamo:"Locality,omitempty" json:"locality,omitempty"`
 	PostalCode      string `dynamo:"PostalCode,omitempty" json:"postalCode,omitempty"`
 	Region          string `dynamo:"Region,omitempty" json:"region,omitempty"`

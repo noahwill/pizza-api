@@ -10,7 +10,7 @@ type Account struct {
 	LastName    string   `dynamo:"LastName,omitempty" json:"lastName,omitempty"`
 	LastUpdated int64    `dynamo:"LastUpdated,omitempty" json:"lastUpdated,omitempty"`
 	Orders      []string `dynamo:"Orders,omitempty" json:"orders,omitempty"`
-	Password    string   `dynamo:"Password,omitempty" json:"password,omitempty"` // TODO: this pizza shop dev hasn't done much work with security - pws are only strings
+	Password    string   `dynamo:"Password,omitempty" json:"password,omitempty"`
 	UUID        string   `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
 }
 
@@ -30,10 +30,11 @@ type GetAccountOutput struct {
 
 // CreateAccountInput : input for the CreateAccountRoute
 type CreateAccountInput struct {
-	Email     *string `json:"email,omitempty"`
-	FirstName *string `json:"firstName,omitempty"`
-	LastName  *string `json:"lastName,omitempty"`
-	Password  *string `json:"password,omitempty"`
+	Address   *Address `json:"address,omitempty"`
+	Email     *string  `json:"email,omitempty"`
+	FirstName *string  `json:"firstName,omitempty"`
+	LastName  *string  `json:"lastName,omitempty"`
+	Password  *string  `json:"password,omitempty"`
 }
 
 // CreateAccountOutput : output for the CreateAccountRoute
@@ -45,11 +46,13 @@ type CreateAccountOutput struct {
 
 // UpdateAccountInput : input for the UpdateAccountRoute
 type UpdateAccountInput struct {
-	Active    *bool   `json:"active,omitempty"`
-	Email     *string `json:"email,omitempty"`
-	FirstName *string `json:"firstName,omitempty"`
-	LastName  *string `json:"lastName,omitempty"`
-	Password  *string `json:"password,omitempty"`
+	Active    *bool    `json:"active,omitempty"`
+	Address   *Address `json:"address,omitempty"`
+	Email     *string  `json:"email,omitempty"`
+	FirstName *string  `json:"firstName,omitempty"`
+	LastName  *string  `json:"lastName,omitempty"`
+	Order     *string  `json:"lastName,omitempty"`
+	Password  *string  `json:"password,omitempty"`
 }
 
 // UpdateAccountOutput : output for the UpdateAccountRoute
