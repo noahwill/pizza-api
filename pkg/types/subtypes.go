@@ -35,11 +35,13 @@ var (
 
 	// Statuses available
 	Statuses = map[string]Status{
-		"Recieved": Recieved,
-		"Assebly":  Assembly,
-		"Baking":   Baking,
-		"Ready":    Ready,
-		"EnRoute":  EnRoute,
+		"Recieved":  Recieved,
+		"Assebly":   Assembly,
+		"Baking":    Baking,
+		"Ready":     Ready,
+		"PickedUp":  PickedUp,
+		"EnRoute":   EnRoute,
+		"Delivered": Delivered,
 	}
 
 	// Topping name to price
@@ -77,6 +79,10 @@ const (
 	Baking Status = "Baking"
 	// Ready status
 	Ready Status = "Ready"
+	// PickedUp status
+	PickedUp Status = "PickedUp"
 	// EnRoute status
 	EnRoute Status = "EnRoute"
+	// Delivered status
+	Delivered Status = "Delivered"
 )

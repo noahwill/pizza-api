@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"errors"
+	"fmt"
 	"pizza-api/pkg/types"
 	"pizza-api/utils"
 	"strings"
@@ -44,7 +45,7 @@ func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) 
 	if toppings.Cheese != "" {
 		c := strings.TrimSpace(toppings.Cheese)
 		if cheesePrice, ok = types.Cheese[c]; !ok {
-			return cleanToppings, price, errors.New("Cheese " + toppings.Cheese + " is unavailable")
+			return cleanToppings, price, fmt.Errorf("Cheese %s is unavailable", toppings.Cheese)
 		}
 		cleanToppings.Cheese = c
 	}
@@ -52,7 +53,7 @@ func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) 
 	if toppings.Sauce != "" {
 		s := strings.TrimSpace(toppings.Sauce)
 		if saucePrice, ok = types.Sauce[s]; !ok {
-			return cleanToppings, price, errors.New("Sauce " + toppings.Sauce + " is unavailable")
+			return cleanToppings, price, fmt.Errorf("Sauce %s is unavailable", toppings.Sauce)
 		}
 		cleanToppings.Sauce = s
 	}
@@ -60,7 +61,7 @@ func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) 
 	for _, topping := range toppings.Toppings {
 		t := strings.TrimSpace(topping)
 		if toppingPrice, ok = types.Topping[t]; !ok {
-			return cleanToppings, price, errors.New("Topping " + topping + " is unavailable")
+			return cleanToppings, price, fmt.Errorf("Topping %s is unavailable", topping)
 		}
 		toppingsPrice += toppingPrice
 		cleanToppings.Toppings = append(cleanToppings.Toppings, t)
@@ -80,8 +81,8 @@ func GetOrderByID(orderID string) (*types.Order, error) {
 	return &order, nil
 }
 
-// ValidateCreateOrderInput : validates CreateOrderInput and constructs an account object to create
-func ValidateCreateOrderInput(in *types.CreateOrderInput, account *types.Account) (*types.Order, error) {
+// ValidateCreateAccountOrderInput : validates CreateAccountOrderInput and constructs an account object to create
+func ValidateCreateAccountOrderInput(in *types.CreateAccountOrderInput, account *types.Account) (*types.Order, error) {
 	var delivery bool
 	var address types.Address
 	order := types.Order{}
@@ -147,8 +148,8 @@ func ValidateCreateOrderInput(in *types.CreateOrderInput, account *types.Account
 	return &order, nil
 }
 
-// ValidateUpdateOrderInput : validates UpdateOrderInput and updates the given account object accordingly
-func ValidateUpdateOrderInput(in *types.UpdateOrderInput, account *types.Account, order *types.Order) (*types.Order, error) {
+// ValidateUpdateAccountOrderInput : validates UpdateOrderInput and updates the given account object accordingly
+func ValidateUpdateAccountOrderInput(in *types.UpdateAccountOrderInput, account *types.Account, order *types.Order) (*types.Order, error) {
 
 	// Validate and update Active
 	if in.Active != nil {
@@ -191,7 +192,10 @@ func ValidateUpdateOrderInput(in *types.UpdateOrderInput, account *types.Account
 		s := strings.TrimSpace(*in.Status)
 		status, ok := types.Statuses[s]
 		if !ok {
-			return order, errors.New("Status " + s + " is invalid")
+			return order, fmt.Errorf("Status %s is invalid", s)
+		}
+		if status == types.PickedUp || status == types.Delivered {
+			order.Active = false
 		}
 		order.Status = status
 	}

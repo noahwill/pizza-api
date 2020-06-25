@@ -13,8 +13,8 @@ import (
 // GetAccountOrdersRoute : get Orders for an Account
 func GetAccountOrdersRoute(c echo.Context) error {
 	accountID := c.Param("account")
-	in := types.GetOrdersInput{}
-	out := types.GetOrdersOutput{}
+	in := types.GetAccountOrdersInput{}
+	out := types.GetAccountOrdersOutput{}
 
 	_, err := helpers.GetAccountByID(accountID)
 	if err != nil {
@@ -59,7 +59,7 @@ func GetAccountOrdersRoute(c echo.Context) error {
 func GetAccountOrderRoute(c echo.Context) error {
 	accountID := c.Param("account")
 	orderID := c.Param("uuid")
-	out := types.GetOrderOutput{}
+	out := types.GetAccountOrderOutput{}
 
 	_, err := helpers.GetAccountByID(accountID)
 	if err != nil {
@@ -82,8 +82,8 @@ func GetAccountOrderRoute(c echo.Context) error {
 // CreateAccountOrderRoute : create an Order for an Account
 func CreateAccountOrderRoute(c echo.Context) error {
 	accountID := c.Param("account")
-	in := types.CreateOrderInput{}
-	out := types.CreateOrderOutput{}
+	in := types.CreateAccountOrderInput{}
+	out := types.CreateAccountOrderOutput{}
 
 	account, err := helpers.GetAccountByID(accountID)
 	if err != nil {
@@ -98,7 +98,7 @@ func CreateAccountOrderRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	order, err := helpers.ValidateCreateOrderInput(&in, account)
+	order, err := helpers.ValidateCreateAccountOrderInput(&in, account)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create order for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
@@ -130,8 +130,8 @@ func CreateAccountOrderRoute(c echo.Context) error {
 func UpdateAccountOrderRoute(c echo.Context) error {
 	accountID := c.Param("account")
 	orderID := c.Param("uuid")
-	in := types.UpdateOrderInput{}
-	out := types.UpdateOrderOutput{}
+	in := types.UpdateAccountOrderInput{}
+	out := types.UpdateAccountOrderOutput{}
 
 	account, err := helpers.GetAccountByID(accountID)
 	if err != nil {
@@ -153,7 +153,7 @@ func UpdateAccountOrderRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	updatedOrder, err := helpers.ValidateUpdateOrderInput(&in, account, &orderToUpdate)
+	updatedOrder, err := helpers.ValidateUpdateAccountOrderInput(&in, account, &orderToUpdate)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not update order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
@@ -177,7 +177,7 @@ func UpdateAccountOrderRoute(c echo.Context) error {
 func DeleteAccountOrderRoute(c echo.Context) error {
 	accountID := c.Param("account")
 	orderID := c.Param("uuid")
-	out := types.DeleteOrderOutput{}
+	out := types.DeleteAccountOrderOutput{}
 
 	_, err := helpers.GetAccountByID(accountID)
 	if err != nil {

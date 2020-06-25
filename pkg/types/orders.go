@@ -15,42 +15,42 @@ type Order struct {
 	UUID        string   `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
 }
 
-// GetOrdersInput : input for the GetOrdersRoute
-type GetOrdersInput struct {
+// GetAccountOrdersInput : input for the GetOrdersRoute
+type GetAccountOrdersInput struct {
 	Active *bool `json:"active,omitempty"`
 }
 
-// GetOrdersOutput : ouput for the GetOrdersRoute
-type GetOrdersOutput struct {
+// GetAccountOrdersOutput : ouput for the GetOrdersRoute
+type GetAccountOrdersOutput struct {
 	Orders []Order `json:"orders,omitempty"`
 	Error  string  `json:"error,omitempty"`
 	Ok     bool    `json:"ok,omitempty"`
 }
 
-// GetOrderOutput : output for the GetOrderRoute
-type GetOrderOutput struct {
+// GetAccountOrderOutput : output for the GetOrderRoute
+type GetAccountOrderOutput struct {
 	Order Order  `json:"order,omitempty"`
 	Error string `json:"error,omitempty"`
 	Ok    bool   `json:"ok,omitempty"`
 }
 
-// CreateOrderInput : input for the CreateOrderRoute
-type CreateOrderInput struct {
+// CreateAccountOrderInput : input for the CreateOrderRoute
+type CreateAccountOrderInput struct {
 	Address  *Address  `json:"address,omitempty"`
 	Delivery *bool     `json:"delivery,omitempty"`
 	Size     *string   `json:"size,omitempty"`
 	Toppings *Toppings `json:"toppings,omitempty"`
 }
 
-// CreateOrderOutput : output for the CreateOrderRoute
-type CreateOrderOutput struct {
+// CreateAccountOrderOutput : output for the CreateOrderRoute
+type CreateAccountOrderOutput struct {
 	Order Order  `json:"order,omitempty"`
 	Error string `json:"error,omitempty"`
 	Ok    bool   `json:"ok,omitempty"`
 }
 
-// UpdateOrderInput : input for the UpdateOrderRoute
-type UpdateOrderInput struct {
+// UpdateAccountOrderInput : input for the UpdateOrderRoute
+type UpdateAccountOrderInput struct {
 	Active   *bool     `json:"active,omitempty"`
 	Address  *Address  `json:"address,omitempty"`
 	Delivery *bool     `json:"delivery,omitempty"`
@@ -59,15 +59,15 @@ type UpdateOrderInput struct {
 	Toppings *Toppings `json:"toppings,omitempty"`
 }
 
-// UpdateOrderOutput : output for the UpdateOrderRoute
-type UpdateOrderOutput struct {
+// UpdateAccountOrderOutput : output for the UpdateOrderRoute
+type UpdateAccountOrderOutput struct {
 	Order Order  `json:"order,omitempty"`
 	Error string `json:"error,omitempty"`
 	Ok    bool   `json:"ok,omitempty"`
 }
 
-// DeleteOrderOutput : output for the DeleteOrderRoute
-type DeleteOrderOutput struct {
+// DeleteAccountOrderOutput : output for the DeleteOrderRoute
+type DeleteAccountOrderOutput struct {
 	Order Order  `json:"order,omitempty"`
 	Error string `json:"error,omitempty"`
 	Ok    bool   `json:"ok,omitempty"`
