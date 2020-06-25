@@ -1,2 +1,2 @@
-# pizza-api
-a small pizza ordering api built in Go on a Postgres DB hosted by AWS
+# ZaRnnr:  pizza-api
+A small pizza ordering API built entirely in Go that sits on AWS DynamoDB and is deployed through Heroku
