@@ -38,11 +38,11 @@ func main() {
 	v1.DELETE("/account/:uuid", v1routes.DeleteAccountRoute)
 
 	// orders
-	v1.GET("/order", v1routes.GetOrdersRoute)
-	v1.GET("/order/:uuid", v1routes.GetOrderRoute)
-	v1.POST("/order", v1routes.CreateOrderRoute)
-	v1.PUT("/order/:uuid", v1routes.UpdateOrderRoute)
-	v1.DELETE("/order/:uuid", v1routes.DeleteOrderRoute)
+	v1.GET(":account/order", v1routes.GetAccountOrdersRoute)
+	v1.GET(":account/order/:uuid", v1routes.GetAccountOrderRoute)
+	v1.POST(":account/order", v1routes.CreateAccountOrderRoute)
+	v1.PUT(":account/order/:uuid", v1routes.UpdateAccountOrderRoute)
+	v1.DELETE(":account/order/:uuid", v1routes.DeleteAccountOrderRoute)
 
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 }
