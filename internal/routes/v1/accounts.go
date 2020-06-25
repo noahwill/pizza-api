@@ -15,11 +15,6 @@ import (
 // GetAccountsRoute : get all active accounts
 func GetAccountsRoute(c echo.Context) error {
 	out := types.GetAccountsOutput{}
-	db := utils.GetAccountsDB()
-	db.Query(`
-		SELECT * 
-		FROM accounts
-	`)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -34,7 +29,6 @@ func GetAccountRoute(c echo.Context) error {
 func CreateAccountRoute(c echo.Context) error {
 	in := types.CreateAccountInput{}
 	out := types.CreateAccountOutput{}
-	db := utils.GetAccountsDB()
 
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
@@ -47,17 +41,6 @@ func CreateAccountRoute(c echo.Context) error {
 		out.Ok = false
 		return c.JSON(http.StatusBadRequest, &out)
 	}
-
-	stmt, err := db.Prepare(`
-		INSERT INTO accounts(Active, CreatedAt, Email, FirstName, LastName, LastUpdated, Password, UUID) 
-		VALUES(?, ?, ?, ?, ?, ?, ?, ? )
-	`)
-	if err != nil {
-		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
-		out.Ok = false
-		return c.JSON(http.StatusInternalServerError, &out)
-	}
-	defer stmt.Close()
 
 	uu, _ := uuid.NewV4()
 	account := utils.Account{
@@ -72,8 +55,7 @@ func CreateAccountRoute(c echo.Context) error {
 	}
 	out.Account = account
 
-	_, err = stmt.Exec(account.Active, account.CreatedAt, account.Email, account.FirstName, account.LastName, account.LastUpdated, account.Password, account.UUID)
-	if err != nil {
+	if err := utils.Config.AccountsTableConn.Put(&account).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
 		return c.JSON(http.StatusInternalServerError, &out)
