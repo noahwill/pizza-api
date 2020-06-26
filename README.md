@@ -74,7 +74,7 @@ type Address struct {
 ## Routes
 There are five routes for each object stucture: Get (all), Get (one), Create, Update, and Delete. Below are details on the routes and some examples of `curl` commands to test them.
 
-# Accounts
+### Accounts
 - GET (Get all): a very simple route that takes no input at all; will return all active accounts
 
 > Mac/Linux/Windows: `curl -X GET http://zarnnr.herokuapp.com/api/v1/account`
