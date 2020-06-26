@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apex/log"
 	"github.com/gofrs/uuid"
 )
 
@@ -29,10 +30,12 @@ func getToppingsPrice(toppings types.Toppings) float64 {
 func validateSize(size string) (float64, error) {
 	var price float64
 
-	if price, ok := types.Size[size]; !ok {
+	price, ok := types.Size[size]
+	if !ok {
 		return price, errors.New("Size is invalid")
 	}
 
+	log.Infof("| Size Price: %f", price)
 	return price, nil
 }
 
