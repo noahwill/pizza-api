@@ -28,7 +28,7 @@ main.go
 |   └── utils.go -- heartbeat route
 └── vendor -- vendored dependencies
 ```
----
+
 ## Internal vs Pkg
 When desiging this api, I saw the possibility for two different types of clients: one built in Go and one built in any other language. To make life easy for someone working in Go to interact with this api, I made the pkg directory that they could simply import into their code and use to easily make calls to the api endpoints. For any other client, if they don't want to shell out to running a small Go app that uses pkg, they are free to hit the endpoints implemented in internal directly. 
 
@@ -77,10 +77,10 @@ type Toppings struct {
 }
 ```
 
-## Routes
+### Routes
 There are five routes for each object stucture: Get (all), Get (one), Create, Update, and Delete. Below are details on the routes and some examples of `curl` commands to test them. (I'm running on Windows, my Mac/Linux curls are untested, let me know if you find any mistakes!)
 
-### Account Routes
+#### Account Routes
 - GET (Get all): takes no input at all; will return all active accounts
 
 > Mac/Linux/Windows: `curl -X GET http://zarnnr.herokuapp.com/api/v1/account`
@@ -113,7 +113,7 @@ There are five routes for each object stucture: Get (all), Get (one), Create, Up
 
 > Mac/Linux/Windows: `curl -X DELETE http://zarnnr.herokuapp.com/api/v1/account/:uuid`
 
-### Order Routes
+#### Order Routes
 
 - GET (Get all): finds an account UUID in the url; json object with an `Active` field is optional; true will return all active orders, false will return inactive orders, nil (unspecified) will return all orders for the account; it will error with an invalid account UUID
 
