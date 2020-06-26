@@ -1,6 +1,6 @@
-# ZaRnnr: pizza-api
+# ZaRnnr: pizza-api 
 *A small pizza shop API built entirely in Go that sits on AWS DynamoDB and is deployed through Heroku*
----
+
 ## Project Structure
 ```
 main.go
@@ -31,7 +31,7 @@ main.go
 ---
 ## Internal vs Pkg
 When desiging this api, I saw the possibility for two different types of clients: one built in Go and one built in any other language. To make life easy for someone working in Go to interact with this api, I made the pkg directory that they could simply import into their code and use to easily make calls to the api endpoints. For any other client, if they don't want to shell out to running a small Go app that uses pkg, they are free to hit the endpoints implemented in internal directly. 
----
+
 ## Accounts + Orders
 There are two underlying objects that back this api: accounts and orders. Both objects have Address objects.
 ```
@@ -76,7 +76,7 @@ type Toppings struct {
 	Toppings []string 
 }
 ```
----
+
 ## Routes
 There are five routes for each object stucture: Get (all), Get (one), Create, Update, and Delete. Below are details on the routes and some examples of `curl` commands to test them. (I'm running on Windows, my Mac/Linux curls are untested, let me know if you find any mistakes!)
 
