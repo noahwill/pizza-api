@@ -127,8 +127,7 @@ There are five routes for each object stucture: Get (all), Get (one), Create, Up
   
 > Mac/Linux: `curl -X PUT -H "Content-Type: application/json" -d '{ "Active": false, "Address": { "StreetAddress": "UPDATE", "ExtendedAddress": "UPDATE", "Locality": "UPDATE", "Region": "UPDATE", "PostalCode": "54321" }, "Delivery": true, "Size": "large", "Status": "Received", "Toppings": { "Cheese": "cheddar", "Sauce": "tomato", "Toppings": ["anchovies", "artichoke", "basil"] } }' http://zarnnr.herokuapp.com/api/v1/:account/order/:uuid`
 
-
-> Windows: `curl -X PUT -H "Content-Type: application/json" -d "{ \"Active\": false, \"Address\": { \"StreetAddress\": \"UPDATE\", \"ExtendedAddress\": \"UPDATE\", \"Locality\": \"UPDATE\", \"Region\": \"UPDATE\", \"PostalCode\": \"54321\" }, \"Delivery\": true, \"Size\": \"large\", \"Status\": "Received" \"Toppings\": { \"Cheese\": \"cheddar\", \"Sauce\": \"tomato\", \"Toppings\": [\"anchovies\", \"artichoke\", \"basil\"] } }" http://zarnnr.herokuapp.com/api/v1/:account/order/:uuid`
+> Windows: `curl -X PUT -H "Content-Type: application/json" -d "{ \"Active\": false, \"Address\": { \"StreetAddress\": \"UPDATE\", \"ExtendedAddress\": \"UPDATE\", \"Locality\": \"UPDATE\", \"Region\": \"UPDATE\", \"PostalCode\": \"54321\" }, \"Delivery\": true, \"Size\": \"large\", \"Status\": \"Received\", \"Toppings\": { \"Cheese\": \"cheddar\", \"Sauce\": \"tomato\", \"Toppings\": [\"anchovies\", \"artichoke\", \"basil\"] } }" http://zarnnr.herokuapp.com/api/v1/:account/order/:uuid`
 
 - DELETE: finds an account and order UUID in the url and will delete one order and remove it from the list of order ids on the account object; will error if no order is found
 
