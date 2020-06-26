@@ -90,7 +90,7 @@ There are five routes for each object stucture: Get (all), Get (one), Create, Up
 
 > Mac/Linux: `curl -X PUT -H "Content-Type: application/json" -d '{"Active": false, "Address": {"StreetAddress": "UPDATE", "ExtendedAddress": "UPDATE", "Locality": "UPDATE", "Region": "UPDATE", "PostalCode": "12345"}, "Email": "[YOUR NEW EMAIL]", "FirstName": "UPDATE", "LastName": "UPDATE", "Password": "UPDATE" }' http://zarnnr.herokuapp.com/api/v1/account/:uuid`
 
-> Windows: `curl -X PUT -H "Content-Type: application/json" -d "{\"Active\": false, \"Address\": {\"StreetAddress\": \"UPDATE\", \"ExtendedAddress\": \"UPDATE\", \"Locality\": \"UPDATE\", \"Region\": \"UPDATE\", \"PostalCode\": \"12345\"}, \"Email\": \"[YOUR NEW EMAIL]\", \"FirstName\": \"UPDATE\", \"LastName\": \"UPDATE\", \"Password\": \"UPDATE\" }" http://zarnnr.herokuapp.com/api/v1/account/c54e54df-0812-424e-ade6-b28ac9a8cf48`
+> Windows: `curl -X PUT -H "Content-Type: application/json" -d "{\"Active\": false, \"Address\": {\"StreetAddress\": \"UPDATE\", \"ExtendedAddress\": \"UPDATE\", \"Locality\": \"UPDATE\", \"Region\": \"UPDATE\", \"PostalCode\": \"12345\"}, \"Email\": \"[YOUR NEW EMAIL]\", \"FirstName\": \"UPDATE\", \"LastName\": \"UPDATE\", \"Password\": \"UPDATE\" }" http://zarnnr.herokuapp.com/api/v1/account/:uuid`
 
 - DELETE: finds an account UUID in the url and will delete one account if found and deletes any orders made by that account
 
