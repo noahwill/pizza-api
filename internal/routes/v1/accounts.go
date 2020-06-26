@@ -7,6 +7,7 @@ import (
 	"pizza-api/pkg/types"
 	"pizza-api/utils"
 
+	"github.com/apex/log"
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,10 +19,12 @@ func GetAccountsRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Scan().Filter("$ = ?", "Active", true).All(&out.Accounts); err != nil {
 		out.Error = fmt.Sprintf("Could not get active accounts with error: %s", err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully got all %d active accounts from accounts table!", len(out.Accounts))
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -34,10 +37,12 @@ func GetAccountRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Get("UUID", accountID).One(&out.Account); err != nil {
 		out.Error = fmt.Sprintf("Could not get account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully got account %s in the accounts table!", out.Account.UUID)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -49,6 +54,7 @@ func CreateAccountRoute(c echo.Context) error {
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -56,6 +62,7 @@ func CreateAccountRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -65,10 +72,12 @@ func CreateAccountRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Put(account).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully created a new account %s in the accounts table!", out.Account.UUID)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -82,12 +91,14 @@ func UpdateAccountRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Get("UUID", accountID).One(&accountToUpdate); err != nil {
 		out.Error = fmt.Sprintf("Could not update account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not update account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -95,6 +106,7 @@ func UpdateAccountRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not update account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -104,10 +116,12 @@ func UpdateAccountRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Put(updatedAccount).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not create account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully updated new account %s in the accounts table!", out.Account.UUID)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -120,6 +134,7 @@ func DeleteAccountRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Get("UUID", accountID).One(&out.Account); err != nil {
 		out.Error = fmt.Sprintf("Could not delete account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -127,6 +142,7 @@ func DeleteAccountRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Delete("UUID", out.Account.UUID).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not delete account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -137,10 +153,12 @@ func DeleteAccountRoute(c echo.Context) error {
 		if err := utils.Config.OrdersTableConn.Delete("UUID", order).Run(); err != nil {
 			out.Error = fmt.Sprintf("Could not delete order %s for deleted account %s with error: %s", order, accountID, err.Error())
 			out.Ok = false
+			log.Errorf("| %s", out.Error)
 			return c.JSON(http.StatusInternalServerError, &out)
 		}
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully deleted account %s from the accounts table along with its %d orders in the orders table!", out.Account.UUID, len(out.Account.Orders))
 	return c.JSON(http.StatusOK, &out)
 }

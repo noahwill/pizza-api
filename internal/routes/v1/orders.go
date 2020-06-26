@@ -9,6 +9,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/apex/log"
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,31 +19,38 @@ func GetAccountOrdersRoute(c echo.Context) error {
 	orders := []types.Order{}
 	in := types.GetAccountOrdersInput{}
 	out := types.GetAccountOrdersOutput{}
+	logText := ""
 
 	_, err := helpers.GetAccountByID(accountID)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	if in.Active != nil {
 		if *in.Active { // Get all active orders
+			logText = " active"
 			if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "AccountID", accountID, "Active", true).All(&orders); err != nil {
 				out.Error = fmt.Sprintf("Could not get active orders for account %s with error: %s", accountID, err.Error())
 				out.Ok = false
+				log.Errorf("| %s", out.Error)
 				return c.JSON(http.StatusInternalServerError, &out)
 			}
 		} else if !*in.Active { // Get all inactive orders
+			logText = " inactive"
 			if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "AccountID", accountID, "Active", false).All(&orders); err != nil {
 				out.Error = fmt.Sprintf("Could not get inactive orders for account %s with error: %s", accountID, err.Error())
 				out.Ok = false
+				log.Errorf("| %s", out.Error)
 				return c.JSON(http.StatusInternalServerError, &out)
 			}
 		}
@@ -50,12 +58,14 @@ func GetAccountOrdersRoute(c echo.Context) error {
 		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "AccountID", accountID).All(&orders); err != nil {
 			out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
 			out.Ok = false
+			log.Errorf("| %s", out.Error)
 			return c.JSON(http.StatusInternalServerError, &out)
 		}
 	}
 
 	out.Orders = orders
 	out.Ok = true
+	log.Infof("| Successfully got all %s%s orders for account %s from the orders table!", len(out.Orders), logText, accountID)
 	return c.JSON(http.StatusOK, &out)
 
 }
@@ -70,6 +80,7 @@ func GetAccountOrderRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create order for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -77,10 +88,12 @@ func GetAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.OrdersTableConn.Get("UUID", orderID).Filter("$ = ?", "AccountID", accountID).One(&out.Order); err != nil {
 		out.Error = fmt.Sprintf("Could not get order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully got order %s for account %s from the orders table!", out.Order.UUID, out.Order.AccountID)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -94,12 +107,14 @@ func CreateAccountOrderRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create order for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not create order for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -107,6 +122,7 @@ func CreateAccountOrderRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create order for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -116,6 +132,7 @@ func CreateAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.OrdersTableConn.Put(order).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not create order for account %s with error: %s", accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -124,10 +141,12 @@ func CreateAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Put(account).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not update account %s orders list with order ID %s with error: %s", accountID, order.UUID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully created order %s for account %s in the orders table!", out.Order.UUID, out.Order.AccountID)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -142,6 +161,7 @@ func UpdateAccountOrderRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not update order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -149,12 +169,14 @@ func UpdateAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.OrdersTableConn.Get("UUID", orderID).One(&orderToUpdate); err != nil {
 		out.Error = fmt.Sprintf("Could not update order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
 	if err := c.Bind(&in); err != nil {
 		out.Error = fmt.Sprintf("Could not update order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -162,6 +184,7 @@ func UpdateAccountOrderRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not update order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -171,10 +194,12 @@ func UpdateAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.OrdersTableConn.Put(updatedOrder).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not create order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Ok = true
+	log.Infof("| Successfully updated order %s for account %s in the orders table!", out.Order.UUID, out.Order.AccountID)
 	return c.JSON(http.StatusOK, &out)
 }
 
@@ -188,6 +213,7 @@ func DeleteAccountOrderRoute(c echo.Context) error {
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not delete order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -195,6 +221,7 @@ func DeleteAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.OrdersTableConn.Get("UUID", orderID).One(&out.Order); err != nil {
 		out.Error = fmt.Sprintf("Could not delete order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusBadRequest, &out)
 	}
 
@@ -202,6 +229,7 @@ func DeleteAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.OrdersTableConn.Delete("UUID", out.Order.UUID).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not delete order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
@@ -218,10 +246,12 @@ func DeleteAccountOrderRoute(c echo.Context) error {
 	if err := utils.Config.AccountsTableConn.Put(&account).Run(); err != nil {
 		out.Error = fmt.Sprintf("Could not remove order %s from list of orders on account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
+		log.Errorf("| %s", out.Error)
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
 	out.Order.Active = false
 	out.Ok = true
+	log.Infof("| Successfully deleted order %s for account %s from the orders table and removed the order ID from the account object in the accounts table!", out.Order.UUID, out.Order.AccountID)
 	return c.JSON(http.StatusOK, &out)
 }
