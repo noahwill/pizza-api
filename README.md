@@ -37,45 +37,26 @@ When desiging this api, I saw the possibility for two different types of clients
 ## Accounts + Orders
 There are two underlying objects that back this api: accounts and orders. Both objects have Address objects.
 ```
-type Account struct {
-	Active      bool    
-	Address     Address 
-	CreatedAt   int64   
-	Email       string  
-	FirstName   string  
-	LastName    string  
-	LastUpdated int64   
-	Orders      []string
-	Password    string  
-	UUID        string  
-}
+type Account struct {       type Order struct {
+	Active      bool            Active      bool
+	Address     Address         AccountID   string   
+	CreatedAt   int64   	      Address     Address
+	Email       string          CreatedAt   int64    
+	FirstName   string          Price       float64 
+	LastName    string          Delivery    bool
+	LastUpdated int64           LastUpdated int64
+	Orders      []string        Size        string
+	Password    string          Status      Status  
+	UUID        string          Toppings    Toppings
+}                             UUID        string
+                            }
 
-type Order struct {
-	Active      bool     
-	AccountID   string   
-	Address     Address  
-	CreatedAt   int64    
-	Price       float64  
-	Delivery    bool     
-	LastUpdated int64    
-	Size        string   
-	Status      Status   
-	Toppings    Toppings 
-	UUID        string   
-}
-
-type Address struct {
-	ExtendedAddress string 
-	Locality        string 
-	PostalCode      string 
-	Region          string 
+type Address struct {       type Toppings struct {
+	ExtendedAddress string      Cheese   string   
+	Locality        string      Sauce    string   
+	PostalCode      string      Toppings []string 
+	Region          string    }
 	StreetAddress   string 
-}
-
-type Toppings struct {
-	Cheese   string   
-	Sauce    string   
-	Toppings []string 
 }
 ```
 
