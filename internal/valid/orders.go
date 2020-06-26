@@ -1,4 +1,4 @@
-package helpers
+package valid
 
 import (
 	"errors"
@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apex/log"
 	"github.com/gofrs/uuid"
 )
 
@@ -35,7 +34,6 @@ func validateSize(size string) (float64, error) {
 		return price, errors.New("Size is invalid")
 	}
 
-	log.Infof("| Size Price: %f", price)
 	return price, nil
 }
 
@@ -46,7 +44,7 @@ func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) 
 	cleanToppings := types.Toppings{}
 
 	if toppings.Cheese != "" {
-		c := strings.TrimSpace(toppings.Cheese)
+		c := strings.ToLower(strings.TrimSpace(toppings.Cheese))
 		if cheesePrice, ok = types.Cheese[c]; !ok {
 			return cleanToppings, price, fmt.Errorf("Cheese %s is unavailable", toppings.Cheese)
 		}
@@ -54,7 +52,7 @@ func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) 
 	}
 
 	if toppings.Sauce != "" {
-		s := strings.TrimSpace(toppings.Sauce)
+		s := strings.ToLower(strings.TrimSpace(toppings.Sauce))
 		if saucePrice, ok = types.Sauce[s]; !ok {
 			return cleanToppings, price, fmt.Errorf("Sauce %s is unavailable", toppings.Sauce)
 		}
@@ -62,7 +60,7 @@ func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) 
 	}
 
 	for _, topping := range toppings.Toppings {
-		t := strings.TrimSpace(topping)
+		t := strings.ToLower(strings.TrimSpace(topping))
 		if toppingPrice, ok = types.Topping[t]; !ok {
 			return cleanToppings, price, fmt.Errorf("Topping %s is unavailable", topping)
 		}
@@ -108,15 +106,13 @@ func ValidateCreateAccountOrderInput(in *types.CreateAccountOrderInput, account 
 		} else if !*in.Delivery {
 			delivery = false
 		}
-	} else if in.Address != nil && in.Delivery == nil {
-		return &order, errors.New("Address was given, but Delivery was not indicated")
 	}
 
 	// Validate and set Size and size price
 	if in.Size == nil {
 		return &order, errors.New("Specify Size")
 	}
-	sizePrice, err := validateSize(strings.TrimSpace(*in.Size))
+	sizePrice, err := validateSize(strings.ToLower(strings.TrimSpace(*in.Size)))
 	if err != nil {
 		return &order, err
 	}
@@ -138,8 +134,8 @@ func ValidateCreateAccountOrderInput(in *types.CreateAccountOrderInput, account 
 		Price:       sizePrice + toppingsPrice,
 		Delivery:    delivery,
 		LastUpdated: time.Now().Unix(),
-		Size:        strings.TrimSpace(*in.Size),
-		Status:      types.Recieved,
+		Size:        strings.ToLower(strings.TrimSpace(*in.Size)),
+		Status:      types.Received,
 		Toppings:    toppings,
 		UUID:        uu.String(),
 	}
@@ -159,37 +155,6 @@ func ValidateUpdateAccountOrderInput(in *types.UpdateAccountOrderInput, account 
 		order.Active = *in.Active
 	}
 
-	// Validate and update delivery and Address
-	if in.Delivery != nil {
-		order.Delivery = *in.Delivery
-		if *in.Delivery {
-			if in.Address != nil { // use the given address
-				a, err := validateAddress(in.Address)
-				if err != nil {
-					return order, err
-				}
-				order.Address = *a
-			} else { // use the account address
-				order.Address = account.Address
-			}
-		} else { // clear the address if delivery is set to false
-			order.Address = types.Address{}
-		}
-	} else if in.Address != nil && in.Delivery == nil {
-		return order, errors.New("Address was given, but Delivery was not indicated")
-	}
-
-	// Validate and update Size
-	if in.Size != nil {
-		currentSizePrice, _ := types.Size[order.Size]
-		sizePrice, err := validateSize(strings.TrimSpace(*in.Size))
-		if err != nil {
-			return order, err
-		}
-		order.Price -= currentSizePrice
-		order.Price += sizePrice
-	}
-
 	// Validate and update Status
 	if in.Status != nil {
 		s := strings.TrimSpace(*in.Status)
@@ -203,25 +168,68 @@ func ValidateUpdateAccountOrderInput(in *types.UpdateAccountOrderInput, account 
 		order.Status = status
 	}
 
+	// Validate and update delivery and Address
+	if in.Delivery != nil {
+		if order.Status != types.PickedUp || order.Status != types.EnRoute || order.Status != types.Delivered {
+			order.Delivery = *in.Delivery
+			if *in.Delivery {
+				if in.Address != nil { // use the given address
+					a, err := validateAddress(in.Address)
+					if err != nil {
+						return order, err
+					}
+					order.Address = *a
+				} else { // use the account address
+					order.Address = account.Address
+				}
+			} else { // clear the address if delivery is set to false
+				order.Address = types.Address{}
+			}
+		} else if in.Address != nil && in.Delivery == nil {
+			return order, errors.New("Address was given, but Delivery was not indicated")
+		} else {
+			return order, fmt.Errorf("Based on the status %s of the order, Delivery option cannont be updated", order.Status)
+		}
+	}
+
+	// Validate and update Size
+	if in.Size != nil {
+		if order.Status == types.Received {
+			currentSizePrice, _ := types.Size[order.Size]
+			sizePrice, err := validateSize(strings.TrimSpace(*in.Size))
+			if err != nil {
+				return order, err
+			}
+			order.Price -= currentSizePrice
+			order.Price += sizePrice
+		} else {
+			return order, fmt.Errorf("Based on the status %s of the order, order Size cannont be updated", order.Status)
+		}
+	}
+
 	// Validate and update Toppings
 	if in.Toppings != nil {
-		currentToppingsPrice := getToppingsPrice(order.Toppings)
-		cleanedToppings, toppingsPrice, err := validateToppings(*in.Toppings)
-		if err != nil {
-			return order, err
-		}
+		if order.Status == types.Received {
+			currentToppingsPrice := getToppingsPrice(order.Toppings)
+			cleanedToppings, toppingsPrice, err := validateToppings(*in.Toppings)
+			if err != nil {
+				return order, err
+			}
 
-		order.Price -= currentToppingsPrice
-		order.Price += toppingsPrice
+			order.Price -= currentToppingsPrice
+			order.Price += toppingsPrice
 
-		if cleanedToppings.Cheese != "" {
-			order.Toppings.Cheese = cleanedToppings.Cheese
-		}
-		if cleanedToppings.Sauce != "" {
-			order.Toppings.Sauce = cleanedToppings.Sauce
-		}
-		if len(cleanedToppings.Toppings) != 0 { // Later we're going to want to make this diff the current toppings with the input and allow the user to add to the toppings, not just overwrite them
-			order.Toppings.Toppings = cleanedToppings.Toppings
+			if cleanedToppings.Cheese != "" {
+				order.Toppings.Cheese = cleanedToppings.Cheese
+			}
+			if cleanedToppings.Sauce != "" {
+				order.Toppings.Sauce = cleanedToppings.Sauce
+			}
+			if len(cleanedToppings.Toppings) != 0 { // Later we're going to want to make this diff the current toppings with the input and allow the user to add to the toppings, not just overwrite them
+				order.Toppings.Toppings = cleanedToppings.Toppings
+			}
+		} else {
+			return order, fmt.Errorf("Based on the status %s of the order, order Toppings cannont be updated", order.Status)
 		}
 	}
 

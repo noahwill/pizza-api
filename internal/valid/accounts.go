@@ -1,4 +1,4 @@
-package helpers
+package valid
 
 import (
 	"errors"
@@ -87,7 +87,7 @@ func ValidateCreateAccountInput(in *types.CreateAccountInput) (*types.Account, e
 	// Validate Password
 	if in.Password == nil {
 		return account, errors.New("Specify a Password")
-	} else if !alphabetic(strings.TrimSpace(*in.Password)) { // TODO : let's validate for stronger passwords, maybe learn some stuff about security, huh bud?
+	} else if !alphaNumeric(strings.TrimSpace(*in.Password)) { // TODO : let's validate for stronger passwords, maybe learn some stuff about security, huh bud?
 		return account, errors.New("Password must be alphabetic")
 	}
 
