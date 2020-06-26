@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 	"net/http"
-	"pizza-api/internal/helpers"
+	v "pizza-api/internal/valid"
 	"pizza-api/pkg/types"
 	"pizza-api/utils"
 
@@ -58,7 +58,7 @@ func CreateAccountRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	account, err := helpers.ValidateCreateAccountInput(&in)
+	account, err := v.ValidateCreateAccountInput(&in)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not create account with error: %s", err.Error())
 		out.Ok = false
@@ -102,7 +102,7 @@ func UpdateAccountRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	updatedAccount, err := helpers.ValidateUpdateAccountInput(&in, &accountToUpdate)
+	updatedAccount, err := v.ValidateUpdateAccountInput(&in, &accountToUpdate)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not update account %s with error: %s", accountID, err.Error())
 		out.Ok = false

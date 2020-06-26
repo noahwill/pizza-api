@@ -7,7 +7,6 @@ type Address struct {
 	PostalCode      string `dynamo:"PostalCode,omitempty" json:"postalCode,omitempty"`
 	Region          string `dynamo:"Region,omitempty" json:"region,omitempty"`
 	StreetAddress   string `dynamo:"StreetAddress,omitempty" json:"streetAddress,omitempty"`
-	UUID            string `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
 }
 
 var (
@@ -35,7 +34,7 @@ var (
 
 	// Statuses available
 	Statuses = map[string]Status{
-		"Recieved":  Recieved,
+		"Received":  Received,
 		"Assebly":   Assembly,
 		"Baking":    Baking,
 		"Ready":     Ready,
@@ -71,8 +70,8 @@ type Toppings struct {
 type Status string
 
 const (
-	// Recieved status
-	Recieved Status = "Recieved"
+	// Received status
+	Received Status = "Received"
 	// Assembly status
 	Assembly Status = "Assembly"
 	// Baking status

@@ -2,7 +2,7 @@ package client
 
 import (
 	"encoding/json"
-	"pizza-api/pkg/internal"
+	"pizza-api/pkg/helpers"
 	"pizza-api/pkg/types"
 )
 
@@ -14,7 +14,7 @@ func GetAccountOrders(accountID string, active bool) (types.GetAccountOrdersOutp
 	out := types.GetAccountOrdersOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("GET", path, in)
+	result, err := helpers.Request("GET", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -28,7 +28,7 @@ func GetAccountOrder(accountID string, orderID string) (types.GetAccountOrderOut
 	out := types.GetAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order/" + orderID
-	result, err := internal.Request("GET", path, nil)
+	result, err := helpers.Request("GET", path, nil)
 	if err != nil {
 		return out, err
 	}
@@ -41,7 +41,7 @@ func GetOrderStatus(accountID string, orderID string) (types.Status, error) {
 	out := types.GetAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order/" + orderID
-	result, err := internal.Request("GET", path, nil)
+	result, err := helpers.Request("GET", path, nil)
 	if err != nil {
 		return out.Order.Status, err
 	}
@@ -60,7 +60,7 @@ func CreateAccountOrder(accountID string, address types.Address, delivery bool, 
 	out := types.CreateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("POST", path, in)
+	result, err := helpers.Request("POST", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -81,7 +81,7 @@ func UpdateAccountOrder(accountID string, orderID string, active bool, address t
 	out := types.UpdateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -98,7 +98,7 @@ func UpdateAccountOrderActive(accountID string, orderID string, active bool) (ty
 	out := types.UpdateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -117,7 +117,7 @@ func UpdateAccountOrderDeliveryAddress(accountID string, orderID string, address
 	out := types.UpdateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -134,7 +134,7 @@ func UpdateAccountOrderSize(accountID string, orderID string, size string) (type
 	out := types.UpdateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -151,7 +151,7 @@ func UpdateAccountOrderStatus(accountID string, orderID string, status string) (
 	out := types.UpdateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -168,7 +168,7 @@ func UpdateAccountOrderToppings(accountID string, orderID string, toppings types
 	out := types.UpdateAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order"
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -182,7 +182,7 @@ func DeleteAccountOrder(accountID string, orderID string) (types.DeleteAccountOr
 	out := types.DeleteAccountOrderOutput{}
 
 	path := "/api/v1/" + accountID + "/order/" + orderID
-	result, err := internal.Request("DELETE", path, nil)
+	result, err := helpers.Request("DELETE", path, nil)
 	if err != nil {
 		return out, err
 	}

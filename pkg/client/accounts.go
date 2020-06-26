@@ -2,7 +2,7 @@ package client
 
 import (
 	"encoding/json"
-	"pizza-api/pkg/internal"
+	"pizza-api/pkg/helpers"
 	"pizza-api/pkg/types"
 )
 
@@ -11,7 +11,7 @@ func GetAccounts() (types.GetAccountsOutput, error) {
 	out := types.GetAccountsOutput{}
 
 	path := "/api/v1/account"
-	result, err := internal.Request("GET", path, nil)
+	result, err := helpers.Request("GET", path, nil)
 	if err != nil {
 		return out, err
 	}
@@ -25,7 +25,7 @@ func GetAccount(accountID string) (types.GetAccountOutput, error) {
 	out := types.GetAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("GET", path, nil)
+	result, err := helpers.Request("GET", path, nil)
 	if err != nil {
 		return out, err
 	}
@@ -45,7 +45,7 @@ func CreateAccount(address types.Address, email string, firstName string, lastNa
 	out := types.CreateAccountOutput{}
 
 	path := "/api/v1/account"
-	result, err := internal.Request("POST", path, in)
+	result, err := helpers.Request("POST", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -67,7 +67,7 @@ func UpdateAccount(accountID string, active bool, address types.Address, email s
 	out := types.UpdateAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -84,7 +84,7 @@ func UpdateAccountActive(accountID string, active bool) (types.UpdateAccountOutp
 	out := types.UpdateAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -101,7 +101,7 @@ func UpdateAccountAddress(accountID string, address types.Address) (types.Update
 	out := types.UpdateAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -118,7 +118,7 @@ func UpdateAccountFirstName(accountID string, firstName string) (types.UpdateAcc
 	out := types.UpdateAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -135,7 +135,7 @@ func UpdateAccountLastName(accountID string, lastName string) (types.UpdateAccou
 	out := types.UpdateAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -152,7 +152,7 @@ func UpdateAccountPassword(accountID string, password string) (types.UpdateAccou
 	out := types.UpdateAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
+	result, err := helpers.Request("PUT", path, in)
 	if err != nil {
 		return out, err
 	}
@@ -166,7 +166,7 @@ func DeleteAccount(accountID string) (types.DeleteAccountOutput, error) {
 	out := types.DeleteAccountOutput{}
 
 	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("DELETE", path, nil)
+	result, err := helpers.Request("DELETE", path, nil)
 	if err != nil {
 		return out, err
 	}
