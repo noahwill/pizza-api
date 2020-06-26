@@ -28,7 +28,7 @@ main.go
 |   └── utils.go -- heartbeat route
 └── vendor -- vendored dependencies
 ```
----
+
 ## Internal vs Pkg
 When desiging this api, I saw the possibility for two different types of clients: one built in Go and one built in any other language. To make life easy for someone working in Go to interact with this api, I made the pkg directory that they could simply import into their code and use to easily make calls to the api endpoints. For any other client, if they don't want to shell out to running a small Go app that uses pkg, they are free to hit the endpoints implemented in internal directly. 
 
