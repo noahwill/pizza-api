@@ -55,14 +55,13 @@ func CreateAccount(address types.Address, email string, firstName string, lastNa
 }
 
 // UpdateAccount : updates an account for accountID with the given inputs
-func UpdateAccount(accountID string, active bool, address types.Address, email string, firstName string, lastName string, order string, password string) (types.UpdateAccountOutput, error) {
+func UpdateAccount(accountID string, active bool, address types.Address, email string, firstName string, lastName string, password string) (types.UpdateAccountOutput, error) {
 	in := types.UpdateAccountInput{
 		Active:    &active,
 		Address:   &address,
 		Email:     &email,
 		FirstName: &firstName,
 		LastName:  &lastName,
-		Order:     &order,
 		Password:  &password,
 	}
 	out := types.UpdateAccountOutput{}
@@ -132,23 +131,6 @@ func UpdateAccountFirstName(accountID string, firstName string) (types.UpdateAcc
 func UpdateAccountLastName(accountID string, lastName string) (types.UpdateAccountOutput, error) {
 	in := types.UpdateAccountInput{
 		LastName: &lastName,
-	}
-	out := types.UpdateAccountOutput{}
-
-	path := "/api/v1/account/" + accountID
-	result, err := internal.Request("PUT", path, in)
-	if err != nil {
-		return out, err
-	}
-
-	json.Unmarshal(result, &out)
-	return out, nil
-}
-
-// UpdateAccountOrders : appends an order ID on to the orders for the account of accountID
-func UpdateAccountOrders(accountID string, order string) (types.UpdateAccountOutput, error) {
-	in := types.UpdateAccountInput{
-		Order: &order,
 	}
 	out := types.UpdateAccountOutput{}
 

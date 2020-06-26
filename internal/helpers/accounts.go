@@ -148,15 +148,6 @@ func ValidateUpdateAccountInput(in *types.UpdateAccountInput, account *types.Acc
 		account.LastName = strings.TrimSpace(*in.LastName)
 	}
 
-	// Validate and Add an order
-	if in.Order != nil {
-		_, err := GetOrderByID(*in.Order)
-		if err != nil {
-			return account, err
-		}
-		account.Orders = append(account.Orders, *in.Order)
-	}
-
 	// Validate and Update Password
 	if in.Password != nil {
 		if !alphabetic(strings.TrimSpace(*in.Password)) {
@@ -165,5 +156,6 @@ func ValidateUpdateAccountInput(in *types.UpdateAccountInput, account *types.Acc
 		account.Password = strings.TrimSpace(*in.Password)
 	}
 
+	account.LastUpdated = time.Now().Unix()
 	return account, nil
 }

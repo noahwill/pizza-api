@@ -222,5 +222,6 @@ func ValidateUpdateAccountOrderInput(in *types.UpdateAccountOrderInput, account 
 		}
 	}
 
+	order.LastUpdated = time.Now().Unix()
 	return order, nil
 }

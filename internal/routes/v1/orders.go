@@ -6,6 +6,8 @@ import (
 	"pizza-api/internal/helpers"
 	"pizza-api/pkg/types"
 	"pizza-api/utils"
+	"sort"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -30,37 +32,32 @@ func GetAccountOrdersRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
-	// if in.Active != nil {
-	// 	if *in.Active { // Get all active orders
-	// 		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "Account", accountID, "Active", true).All(&orders); err != nil {
-	// 			out.Error = fmt.Sprintf("Could not get active orders for account %s with error: %s", accountID, err.Error())
-	// 			out.Ok = false
-	// 			return c.JSON(http.StatusInternalServerError, &out)
-	// 		}
-	// 	} else if !*in.Active { // Get all inactive orders
-	// 		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "Account", accountID, "Active", false).All(&orders); err != nil {
-	// 			out.Error = fmt.Sprintf("Could not get inactive orders for account %s with error: %s", accountID, err.Error())
-	// 			out.Ok = false
-	// 			return c.JSON(http.StatusInternalServerError, &out)
-	// 		}
-	// 	}
-	// } else { // Get all orders
-	// 	if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "Account", accountID).All(&orders); err != nil {
-	// 		out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
-	// 		out.Ok = false
-	// 		return c.JSON(http.StatusInternalServerError, &out)
-	// 	}
-	// }
-
-	if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "Account", accountID).All(&orders); err != nil {
-		out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
-		out.Ok = false
-		return c.JSON(http.StatusInternalServerError, &out)
+	if in.Active != nil {
+		if *in.Active { // Get all active orders
+			if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "AccountID", accountID, "Active", true).All(&orders); err != nil {
+				out.Error = fmt.Sprintf("Could not get active orders for account %s with error: %s", accountID, err.Error())
+				out.Ok = false
+				return c.JSON(http.StatusInternalServerError, &out)
+			}
+		} else if !*in.Active { // Get all inactive orders
+			if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ? AND $ = ?", "AccountID", accountID, "Active", false).All(&orders); err != nil {
+				out.Error = fmt.Sprintf("Could not get inactive orders for account %s with error: %s", accountID, err.Error())
+				out.Ok = false
+				return c.JSON(http.StatusInternalServerError, &out)
+			}
+		}
+	} else { // Get all orders
+		if err := utils.Config.OrdersTableConn.Scan().Filter("$ = ?", "AccountID", accountID).All(&orders); err != nil {
+			out.Error = fmt.Sprintf("Could not get orders for account %s with error: %s", accountID, err.Error())
+			out.Ok = false
+			return c.JSON(http.StatusInternalServerError, &out)
+		}
 	}
 
 	out.Orders = orders
 	out.Ok = true
 	return c.JSON(http.StatusOK, &out)
+
 }
 
 // GetAccountOrderRoute : get a single Order for an Account
@@ -77,7 +74,7 @@ func GetAccountOrderRoute(c echo.Context) error {
 	}
 
 	// Get the order out of the DB
-	if err := utils.Config.OrdersTableConn.Get("UUID", orderID).Filter("$ = ?", "Account", accountID).One(&out.Order); err != nil {
+	if err := utils.Config.OrdersTableConn.Get("UUID", orderID).Filter("$ = ?", "AccountID", accountID).One(&out.Order); err != nil {
 		out.Error = fmt.Sprintf("Could not get order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
 		return c.JSON(http.StatusBadRequest, &out)
@@ -187,7 +184,7 @@ func DeleteAccountOrderRoute(c echo.Context) error {
 	orderID := c.Param("uuid")
 	out := types.DeleteAccountOrderOutput{}
 
-	_, err := helpers.GetAccountByID(accountID)
+	account, err := helpers.GetAccountByID(accountID)
 	if err != nil {
 		out.Error = fmt.Sprintf("Could not delete order %s for account %s with error: %s", orderID, accountID, err.Error())
 		out.Ok = false
@@ -208,6 +205,23 @@ func DeleteAccountOrderRoute(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &out)
 	}
 
+	// Remove the order from the account orders list and update the account in the DB
+	var a, b []string
+	accountOrders := account.Orders
+	sort.Strings(accountOrders)
+	removeIdx := sort.SearchStrings(accountOrders, out.Order.UUID)
+	a = accountOrders[:removeIdx-1]
+	b = accountOrders[removeIdx:]
+	account.Orders = append(a, b...)
+	account.LastUpdated = time.Now().Unix()
+
+	if err := utils.Config.AccountsTableConn.Put(&account).Run(); err != nil {
+		out.Error = fmt.Sprintf("Could not remove order %s from list of orders on account %s with error: %s", orderID, accountID, err.Error())
+		out.Ok = false
+		return c.JSON(http.StatusInternalServerError, &out)
+	}
+
+	out.Order.Active = false
 	out.Ok = true
 	return c.JSON(http.StatusOK, &out)
 }
