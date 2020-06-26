@@ -20,7 +20,7 @@ go.sum
 |    |   ├── accounts.go  
 |    |   └── orders.go    
 |    ├── helpers
-|    |    ├── http-helper.go -- facilitates an http request to the api for the client
+|    |    └── http-helper.go -- facilitates an http request to the api for the client
 |    └── types
 |        ├── accounts.go -- account structure; account routes input/output types
 |        ├── orders.go   -- order structure; order routes input/output types
