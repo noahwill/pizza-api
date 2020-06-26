@@ -93,9 +93,9 @@ There are five routes for each object stucture: Get (all), Get (one), Create, Up
   - `FirstName` and `LastName` must be alphabetic and may contain spaces
   - `Password` must be alphanumeric and may contain spaces (I'm a noob when it comes to security - that's a growth point from this project for sure)
 
-> Mac/Linux: `curl -X POST -H "Content-Type: application/json" -d '{"Address": {"StreetAddress": "90 N Austin Ave", "ExtendedAddress": "#1E", "Locality": "Chicago", "Region": "IL", "PostalCode": "60607"}, "Email": "[YOUR EMAIL]", "FirstName": "Poppa", "LastName": "John", "Password": "pizzatime" }' http://zarnnr.herokuapp.com/api/v1/account`
+> Mac/Linux: `curl -X POST -H "Content-Type: application/json" -d '{"Address": {"StreetAddress": "90 N Austin Ave", "ExtendedAddress": "#1E", "Locality": "Chicago", "Region": "IL", "PostalCode": "60607"}, "Email": "[YOUR EMAIL]", "FirstName": "Popa", "LastName": "John", "Password": "pizzatime" }' http://zarnnr.herokuapp.com/api/v1/account`
 
-> Windows: `curl -X POST -H "Content-Type: application/json" -d "{\"Address\": {\"StreetAddress\": \"90 N Austin Ave\", \"ExtendedAddress\": \"#1E\", \"Locality\": \"Chicago\", \"Region\": \"IL\", \"PostalCode\": \"60607\"}, \"Email\": \"[YOUR EMAIL]\", \"FirstName\": \"Poppa\", \"LastName\": \"John\", \"Password\": \"pizzatime\" }" http://zarnnr.herokuapp.com/api/v1/account`
+> Windows: `curl -X POST -H "Content-Type: application/json" -d "{\"Address\": {\"StreetAddress\": \"90 N Austin Ave\", \"ExtendedAddress\": \"#1E\", \"Locality\": \"Chicago\", \"Region\": \"IL\", \"PostalCode\": \"60607\"}, \"Email\": \"[YOUR EMAIL]\", \"FirstName\": \"Popa\", \"LastName\": \"John\", \"Password\": \"pizzatime\" }" http://zarnnr.herokuapp.com/api/v1/account`
 
 - PUT (Update): finds an account id in the url and looks for a json input that may contain a boolean Active, an updated Address, email, first and last name, or password; all the fields are optional; when updating an address, all Address fields must be populated (see above for validation details for these inputs); will error if no match is found for the given account id
 
