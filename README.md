@@ -4,6 +4,8 @@
 ## Project Structure
 ```
 main.go
+go.mod
+go.sum
 ├── internal 
 |    ├── valid
 |    |   ├── accounts.go -- account create/update input validation
