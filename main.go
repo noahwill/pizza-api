@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/apex/log"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,6 +16,7 @@ func main() {
 	log.Infof("| ZaRnnr is hot 'n ready!")
 
 	e := echo.New()
+	// Arbitrary time out values
 	e.Server.IdleTimeout = 30 * time.Second
 	e.Server.ReadTimeout = 15 * time.Second
 	e.Server.ReadHeaderTimeout = 10 * time.Second
