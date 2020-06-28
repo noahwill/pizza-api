@@ -170,7 +170,7 @@ func ValidateUpdateAccountOrderInput(in *types.UpdateAccountOrderInput, account 
 
 	// Validate and update delivery and Address
 	if in.Delivery != nil {
-		if order.Status != types.PickedUp || order.Status != types.EnRoute || order.Status != types.Delivered {
+		if order.Status != types.PickedUp && order.Status != types.EnRoute && order.Status != types.Delivered {
 			order.Delivery = *in.Delivery
 			if *in.Delivery {
 				if in.Address != nil { // use the given address
