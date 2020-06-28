@@ -30,6 +30,8 @@ func main() {
 	// service and have ample time to switch over to the new routes after a release
 	v1 := e.Group("/api/v1")
 
+	// TODO: add auth middlware for all these routes that looks for "Authorization": "Bearer [TOKEN]" in the request header
+
 	// accounts
 	v1.GET("/account", v1routes.GetAccountsRoute)
 	v1.GET("/account/:uuid", v1routes.GetAccountRoute)
