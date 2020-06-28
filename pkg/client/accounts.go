@@ -161,7 +161,7 @@ func UpdateAccountPassword(accountID string, password string) (types.UpdateAccou
 	return out, nil
 }
 
-// DeleteAccount : deletes the  of accountID
+// DeleteAccount : deletes the account of accountID along with any orders made by that account
 func DeleteAccount(accountID string) (types.DeleteAccountOutput, error) {
 	out := types.DeleteAccountOutput{}
 
