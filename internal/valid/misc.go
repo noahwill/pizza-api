@@ -18,6 +18,8 @@ var (
 	alphaNumericOcto = regexp.MustCompile(`^[A-Za-z0-9#" "]+$`).MatchString
 )
 
+// TODO: validateAddress can probably be improved or a solution may already be written in Go
+//       we'd want to see if an address actually indicates a place on a map
 func validateAddress(address *types.Address) (*types.Address, error) {
 	if address.StreetAddress == "" {
 		return address, errors.New("Specify a StreetAddress")
