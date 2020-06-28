@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 // Request : facilitates an http request for the client
 func Request(method string, path string, payload interface{}) ([]byte, error) {
 	payloadData, _ := json.Marshal(&payload)
-	url := "http://zarnnr.herokuapp.com/" + path
+	url := os.Getenv("HOST") + path
 	req := &http.Request{}
 	if payload != nil {
 		req, _ = http.NewRequest(method, url, bytes.NewReader(payloadData))
