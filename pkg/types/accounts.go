@@ -2,16 +2,16 @@ package types
 
 // Account : represents a ZaRnnr account
 type Account struct {
-	Active      bool     `dynamo:"Active,omitempty" json:"active,omitempty"`
-	Address     Address  `dynamo:"Address,omitempty" json:"address,omitempty"`
-	CreatedAt   int64    `dynamo:"CreatedAt,omitempty" json:"createdAt,omitempty"`
-	Email       string   `dynamo:"Email,omitempty" json:"email,omitempty"`
-	FirstName   string   `dynamo:"FirstName,omitempty" json:"firstName,omitempty"`
-	LastName    string   `dynamo:"LastName,omitempty" json:"lastName,omitempty"`
+	Active      bool     `dynamo:"Active,omitempty"      json:"active,omitempty"`
+	Address     Address  `dynamo:"Address,omitempty"     json:"address,omitempty"`
+	CreatedAt   int64    `dynamo:"CreatedAt,omitempty"   json:"createdAt,omitempty"`
+	Email       string   `dynamo:"Email,omitempty"       json:"email,omitempty"`
+	FirstName   string   `dynamo:"FirstName,omitempty"   json:"firstName,omitempty"`
+	LastName    string   `dynamo:"LastName,omitempty"    json:"lastName,omitempty"`
 	LastUpdated int64    `dynamo:"LastUpdated,omitempty" json:"lastUpdated,omitempty"`
-	Orders      []string `dynamo:"Orders,omitempty" json:"orders,omitempty"`
-	Password    string   `dynamo:"Password,omitempty" json:"password,omitempty"`
-	UUID        string   `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
+	Orders      []string `dynamo:"Orders,omitempty"      json:"orders,omitempty"`
+	Password    string   `dynamo:"Password,omitempty"    json:"password,omitempty"`
+	UUID        string   `dynamo:"UUID,omitempty"        json:"UUID,omitempty"`
 }
 
 // GetAccountsOutput : ouput for the GetAccountsRoute

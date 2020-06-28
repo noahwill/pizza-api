@@ -3,10 +3,10 @@ package types
 // Address : represents a ZaRnnr order address
 type Address struct {
 	ExtendedAddress string `dynamo:"ExtendedAddress,omitempty" json:"extendedAddress,omitempty"`
-	Locality        string `dynamo:"Locality,omitempty" json:"locality,omitempty"`
-	PostalCode      string `dynamo:"PostalCode,omitempty" json:"postalCode,omitempty"`
-	Region          string `dynamo:"Region,omitempty" json:"region,omitempty"`
-	StreetAddress   string `dynamo:"StreetAddress,omitempty" json:"streetAddress,omitempty"`
+	Locality        string `dynamo:"Locality,omitempty"        json:"locality,omitempty"`
+	PostalCode      string `dynamo:"PostalCode,omitempty"      json:"postalCode,omitempty"`
+	Region          string `dynamo:"Region,omitempty"          json:"region,omitempty"`
+	StreetAddress   string `dynamo:"StreetAddress,omitempty"   json:"streetAddress,omitempty"`
 }
 
 var (
@@ -61,8 +61,8 @@ var (
 
 // Toppings : represents a ZaRnnr order toppings
 type Toppings struct {
-	Cheese   string   `dynamo:"Cheese,omitempty" json:"cheese,omitempty"`
-	Sauce    string   `dynamo:"Sauce,omitempty" json:"sauce,omitempty"`
+	Cheese   string   `dynamo:"Cheese,omitempty"   json:"cheese,omitempty"`
+	Sauce    string   `dynamo:"Sauce,omitempty"    json:"sauce,omitempty"`
 	Toppings []string `dynamo:"Toppings,omitempty" json:"toppings,omitempty"`
 }
 

@@ -2,17 +2,17 @@ package types
 
 // Order : represents a ZaRnnr order
 type Order struct {
-	Active      bool     `dynamo:"Active,omitempty" json:"active,omitempty"`
-	AccountID   string   `dynamo:"AccountID,omitempty" json:"accountID,omitempty"`
-	Address     Address  `dynamo:"Address,omitempty" json:"address,omitempty"`
-	CreatedAt   int64    `dynamo:"CreatedAt,omitempty" json:"createdAt,omitempty"`
-	Price       float64  `dynamo:"Cost,omitempty" json:"cost,omitempty"`
-	Delivery    bool     `dynamo:"Delivery,omitempty" json:"delivery,omitempty"`
+	Active      bool     `dynamo:"Active,omitempty"      json:"active,omitempty"`
+	AccountID   string   `dynamo:"AccountID,omitempty"   json:"accountID,omitempty"`
+	Address     Address  `dynamo:"Address,omitempty"     json:"address,omitempty"`
+	CreatedAt   int64    `dynamo:"CreatedAt,omitempty"   json:"createdAt,omitempty"`
+	Price       float64  `dynamo:"Cost,omitempty"        json:"cost,omitempty"`
+	Delivery    bool     `dynamo:"Delivery,omitempty"    json:"delivery,omitempty"`
 	LastUpdated int64    `dynamo:"LastUpdated,omitempty" json:"lastUpdated,omitempty"`
-	Size        string   `dynamo:"Size,omitempty" json:"size,omitempty"`
-	Status      Status   `dynamo:"Status,omitempty" json:"status,omitempty"`
-	Toppings    Toppings `dynamo:"Toppings,omitempty" json:"toppings,omitempty"`
-	UUID        string   `dynamo:"UUID,omitempty" json:"UUID,omitempty"`
+	Size        string   `dynamo:"Size,omitempty"        json:"size,omitempty"`
+	Status      Status   `dynamo:"Status,omitempty"      json:"status,omitempty"`
+	Toppings    Toppings `dynamo:"Toppings,omitempty"    json:"toppings,omitempty"`
+	UUID        string   `dynamo:"UUID,omitempty"        json:"UUID,omitempty"`
 }
 
 // GetAccountOrdersInput : input for the GetOrdersRoute
