@@ -40,7 +40,7 @@ func validateEmail(email string) error {
 	return nil
 }
 
-// GetAccountByID :
+// GetAccountByID : gets an account from the accounts table by ID
 func GetAccountByID(accountID string) (*types.Account, error) {
 	var account types.Account
 	if err := utils.Config.AccountsTableConn.Get("UUID", accountID).One(&account); err != nil {
@@ -87,7 +87,8 @@ func ValidateCreateAccountInput(in *types.CreateAccountInput) (*types.Account, e
 	// Validate Password
 	if in.Password == nil {
 		return account, errors.New("Specify a Password")
-	} else if !alphaNumeric(strings.TrimSpace(*in.Password)) { // TODO : let's validate for stronger passwords, maybe learn some stuff about security, huh bud?
+		// TODO : let's validate for stronger passwords, maybe learn some stuff about security, huh bud?
+	} else if !alphaNumeric(strings.TrimSpace(*in.Password)) {
 		return account, errors.New("Password must be alphabetic")
 	}
 
