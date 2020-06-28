@@ -12,6 +12,7 @@ import (
 )
 
 // GetAccountsRoute : get all active accounts
+// TODO : this will not scale well, need buffer for getting all acounts
 func GetAccountsRoute(c echo.Context) error {
 	out := types.GetAccountsOutput{}
 
