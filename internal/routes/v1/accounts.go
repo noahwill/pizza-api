@@ -12,7 +12,8 @@ import (
 )
 
 // GetAccountsRoute : get all active accounts
-// TODO : this will not scale well, need buffer for getting all acounts
+//        TODO : this will not scale well, need buffer for getting all acounts
+//        TODO : create an input type for this route that allows someone to get All or all Active or all Inactive accounts
 func GetAccountsRoute(c echo.Context) error {
 	out := types.GetAccountsOutput{}
 
