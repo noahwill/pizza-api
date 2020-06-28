@@ -78,7 +78,7 @@ There are five routes for each object stucture: Get (all), Get (one), Create, Up
     - `ExtendedAddress` may must alphanumeric, may contain spaces, and may also contain an octothorpe (#)
     - `Locality` and `Region` must be alphabetic and may contain spaces
     - `PostalCode` must only be numeric
-  - `Email` must contain an @ symbol, exist, have a valid format, and be from a valid host
+  - `Email` must contain an @ symbol, have a valid format, be from a valid host, and exist at that host
   - `FirstName` and `LastName` must be alphabetic and may contain spaces
   - `Password` must be alphanumeric and may contain spaces (I'm a noob when it comes to security - that's a growth point from this project for sure)
 
