@@ -39,9 +39,11 @@ func validateSize(size string) (float64, error) {
 
 // validates a toppings object and returns the sum of its prices
 func validateToppings(toppings types.Toppings) (types.Toppings, float64, error) {
-	var price, cheesePrice, saucePrice, toppingPrice, toppingsPrice float64
-	ok := false
-	cleanToppings := types.Toppings{}
+	var (
+		ok                                                          bool
+		cleanToppings                                               types.Toppings
+		price, cheesePrice, saucePrice, toppingPrice, toppingsPrice float64
+	)
 
 	if toppings.Cheese != "" {
 		c := strings.ToLower(strings.TrimSpace(toppings.Cheese))
@@ -84,9 +86,11 @@ func GetOrderByID(orderID string) (*types.Order, error) {
 
 // ValidateCreateAccountOrderInput : validates CreateAccountOrderInput and constructs an account object to create
 func ValidateCreateAccountOrderInput(in *types.CreateAccountOrderInput, account *types.Account) (*types.Order, error) {
-	var delivery bool
-	var address types.Address
-	order := types.Order{}
+	var (
+		delivery bool
+		address  types.Address
+		order    types.Order
+	)
 
 	// Validate and set Deliver and Address
 	if in.Delivery == nil {

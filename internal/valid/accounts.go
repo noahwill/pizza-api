@@ -51,7 +51,7 @@ func GetAccountByID(accountID string) (*types.Account, error) {
 
 // ValidateCreateAccountInput : validates CreateAccountInput and constructs an account object to create
 func ValidateCreateAccountInput(in *types.CreateAccountInput) (*types.Account, error) {
-	account := &types.Account{}
+	var account *types.Account
 
 	// Validate and set Address
 	if in.Address == nil {
